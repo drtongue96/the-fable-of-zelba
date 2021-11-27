@@ -512,7 +512,6 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`tSandOuch`, function (sprite,
 })
 // Initialize the player's data
 function initializePlayer () {
-    console.log("initializePlayer")
     maxHealth = 10
     dink = sprites.create(assets.image`sprDink0`, SpriteKind.Player)
     dink.setFlag(SpriteFlag.Invisible, true)
@@ -633,10 +632,9 @@ function doWalk () {
     })
 }
 function spawnMonsters () {
-    console.log("spawnMonsters")
-    for (let value8 of tiles.getTilesByType(tiles.util.object4)) {
+    for (let value of tiles.getTilesByType(tiles.util.object4)) {
         myEnemy = sprites.create(assets.image`Shmoblin`, SpriteKind.Enemy)
-        tiles.placeOnTile(myEnemy, value8)
+        tiles.placeOnTile(myEnemy, value)
         sprites.setDataNumber(myEnemy, "id", monsterId)
         sprites.setDataString(myEnemy, "monster", "shmoblin")
         sprites.setDataString(myEnemy, "talk", "!")
@@ -646,7 +644,7 @@ function spawnMonsters () {
         sprites.setDataNumber(myEnemy, "speed", 20)
         sprites.setDataNumber(myEnemy, "invincible", 0)
         if (platformFlag) {
-            tiles.setTileAt(value8, assets.tile`transparency16`)
+            tiles.setTileAt(value, assets.tile`transparency16`)
             myEnemy.ay = 300
         }
         monsterId += 1
@@ -669,9 +667,9 @@ function spawnMonsters () {
         characterAnimations.rule(Predicate.NotMoving)
         )
     }
-    for (let value9 of tiles.getTilesByType(tiles.util.object6)) {
+    for (let value of tiles.getTilesByType(tiles.util.object6)) {
         myEnemy = sprites.create(assets.image`FireOoze`, SpriteKind.Enemy)
-        tiles.placeOnTile(myEnemy, value9)
+        tiles.placeOnTile(myEnemy, value)
         sprites.setDataNumber(myEnemy, "id", monsterId)
         sprites.setDataString(myEnemy, "monster", "fire ooze")
         sprites.setDataString(myEnemy, "talk", "!")
@@ -681,7 +679,7 @@ function spawnMonsters () {
         sprites.setDataNumber(myEnemy, "speed", 20)
         sprites.setDataNumber(myEnemy, "invincible", 0)
         if (platformFlag) {
-            tiles.setTileAt(value9, assets.tile`transparency16`)
+            tiles.setTileAt(value, assets.tile`transparency16`)
         }
         characterAnimations.loopFrames(
         myEnemy,
@@ -703,9 +701,9 @@ function spawnMonsters () {
         )
         monsterId += 1
     }
-    for (let value10 of tiles.getTilesByType(tiles.util.object12)) {
+    for (let value of tiles.getTilesByType(tiles.util.object12)) {
         myEnemy = sprites.create(assets.image`sprBat`, SpriteKind.Enemy)
-        tiles.placeOnTile(myEnemy, value10)
+        tiles.placeOnTile(myEnemy, value)
         sprites.setDataNumber(myEnemy, "id", monsterId)
         sprites.setDataString(myEnemy, "monster", "bat")
         sprites.setDataString(myEnemy, "talk", "")
@@ -715,7 +713,7 @@ function spawnMonsters () {
         sprites.setDataNumber(myEnemy, "speed", 30)
         sprites.setDataNumber(myEnemy, "invincible", 0)
         if (platformFlag) {
-            tiles.setTileAt(value10, assets.tile`transparency16`)
+            tiles.setTileAt(value, assets.tile`transparency16`)
         }
         characterAnimations.loopFrames(
         myEnemy,
@@ -737,9 +735,9 @@ function spawnMonsters () {
         )
         monsterId += 1
     }
-    for (let value11 of tiles.getTilesByType(tiles.util.object14)) {
+    for (let value of tiles.getTilesByType(tiles.util.object14)) {
         myEnemy = sprites.create(assets.image`sprGhost`, SpriteKind.Enemy)
-        tiles.placeOnTile(myEnemy, value11)
+        tiles.placeOnTile(myEnemy, value)
         sprites.setDataNumber(myEnemy, "id", monsterId)
         sprites.setDataString(myEnemy, "monster", "ghost")
         sprites.setDataString(myEnemy, "talk", "boo")
@@ -749,7 +747,7 @@ function spawnMonsters () {
         sprites.setDataNumber(myEnemy, "speed", 20)
         sprites.setDataNumber(myEnemy, "invincible", 0)
         if (platformFlag) {
-            tiles.setTileAt(value11, assets.tile`transparency16`)
+            tiles.setTileAt(value, assets.tile`transparency16`)
             myEnemy.ay = 300
         }
         characterAnimations.loopFrames(
@@ -772,7 +770,8 @@ function spawnMonsters () {
         )
         monsterId += 1
     }
-    for (let value11 of tiles.getTilesByType(assets.tile`tFrog`)) {
+    for (let value of tiles.getTilesByType(assets.tile`tFrog`)) {
+        let value11: tiles.Location = null
         myEnemy = sprites.create(assets.image`sprFrog`, SpriteKind.Enemy)
         tiles.placeOnTile(myEnemy, value11)
         sprites.setDataNumber(myEnemy, "id", monsterId)
@@ -784,7 +783,7 @@ function spawnMonsters () {
         sprites.setDataNumber(myEnemy, "speed", 30)
         sprites.setDataNumber(myEnemy, "invincible", 0)
         if (platformFlag) {
-            tiles.setTileAt(value11, assets.tile`transparency16`)
+            tiles.setTileAt(value, assets.tile`transparency16`)
             myEnemy.ay = 300
         }
         characterAnimations.loopFrames(
@@ -807,9 +806,9 @@ function spawnMonsters () {
         )
         monsterId += 1
     }
-    for (let value12 of tiles.getTilesByType(assets.tile`tmGurg`)) {
+    for (let value of tiles.getTilesByType(assets.tile`tmGurg`)) {
         myGurg = sprites.create(assets.image`sprGurg`, SpriteKind.Enemy)
-        tiles.placeOnTile(myGurg, value12)
+        tiles.placeOnTile(myGurg, value)
         sprites.setDataNumber(myGurg, "id", monsterId)
         sprites.setDataString(myGurg, "monster", "gurg")
         sprites.setDataString(myGurg, "talk", "kmmphh")
@@ -838,9 +837,9 @@ function spawnMonsters () {
         )
         monsterId += 1
     }
-    for (let value13 of tiles.getTilesByType(assets.tile`tmPaco`)) {
+    for (let value of tiles.getTilesByType(assets.tile`tmPaco`)) {
         myPaco = sprites.create(assets.image`sprPacoPaco`, SpriteKind.Enemy)
-        tiles.placeOnTile(myPaco, value13)
+        tiles.placeOnTile(myPaco, value)
         sprites.setDataNumber(myPaco, "id", monsterId)
         sprites.setDataString(myPaco, "monster", "paco")
         sprites.setDataString(myPaco, "talk", "Ehhnn")
@@ -860,7 +859,7 @@ function spawnMonsters () {
         )
         monsterId += 1
         myLeftEye = sprites.create(assets.image`sprEye`, SpriteKind.Enemy)
-        tiles.placeOnTile(myLeftEye, value13)
+        tiles.placeOnTile(myLeftEye, value)
         sprites.setDataNumber(myLeftEye, "id", monsterId)
         sprites.setDataString(myLeftEye, "monster", "pacolefteye")
         sprites.setDataString(myLeftEye, "talk", "Ehhnn")
@@ -877,7 +876,7 @@ function spawnMonsters () {
         )
         monsterId += 1
         myRightEye = sprites.create(assets.image`sprEye`, SpriteKind.Enemy)
-        tiles.placeOnTile(myRightEye, value13)
+        tiles.placeOnTile(myRightEye, value)
         sprites.setDataNumber(myRightEye, "id", monsterId)
         sprites.setDataString(myRightEye, "monster", "pacorighteye")
         sprites.setDataString(myRightEye, "talk", "Ehhnn")
@@ -895,9 +894,9 @@ function spawnMonsters () {
         monsterId += 1
         setEyePosition()
     }
-    for (let value12 of tiles.getTilesByType(assets.tile`tShicken`)) {
+    for (let value of tiles.getTilesByType(assets.tile`tShicken`)) {
         myShicken = sprites.create(assets.image`sprShicken`, SpriteKind.Enemy)
-        tiles.placeOnTile(myShicken, value12)
+        tiles.placeOnTile(myShicken, value)
         sprites.setDataNumber(myShicken, "id", monsterId)
         sprites.setDataString(myShicken, "monster", "shicken")
         sprites.setDataString(myShicken, "talk", "bok")
@@ -909,7 +908,7 @@ function spawnMonsters () {
         sprites.setDataNumber(myShicken, "isShooting", 1)
         myShicken.vx = sprites.readDataNumber(myShicken, "speed") * -1
         if (platformFlag) {
-            tiles.setTileAt(value12, assets.tile`transparency16`)
+            tiles.setTileAt(value, assets.tile`transparency16`)
         }
         characterAnimations.loopFrames(
         myShicken,
@@ -925,7 +924,7 @@ function spawnMonsters () {
         )
         monsterId += 1
         myBelly = sprites.create(assets.image`sprShickenBelly`, SpriteKind.Enemy)
-        tiles.placeOnTile(myBelly, value12)
+        tiles.placeOnTile(myBelly, value)
         sprites.setDataNumber(myBelly, "id", monsterId)
         sprites.setDataString(myBelly, "monster", "shickenbelly")
         sprites.setDataString(myBelly, "talk", "bok")
@@ -937,7 +936,7 @@ function spawnMonsters () {
         monsterId += 1
         setBellyPosition()
     }
-    for (let value11 of tiles.getTilesByType(assets.tile`tBald`)) {
+    for (let value of tiles.getTilesByType(assets.tile`tBald`)) {
         myBald = sprites.create(assets.image`sprBaldHead`, SpriteKind.Enemy)
         myBald.z = 5
         myBald.setPosition(32, 32)
@@ -970,9 +969,9 @@ function spawnMonsters () {
         )
         monsterId += 1
     }
-    for (let value11 of tiles.getTilesByType(assets.tile`tGunL`)) {
+    for (let value of tiles.getTilesByType(assets.tile`tGunL`)) {
         myGun = sprites.create(assets.image`sprGunLeft`, SpriteKind.Gun)
-        tiles.placeOnTile(myGun, value11)
+        tiles.placeOnTile(myGun, value)
         sprites.setDataNumber(myGun, "id", monsterId)
         sprites.setDataString(myGun, "monster", "gunleft")
         sprites.setDataString(myGun, "talk", "")
@@ -982,12 +981,12 @@ function spawnMonsters () {
         sprites.setDataNumber(myGun, "speed", 50)
         sprites.setDataNumber(myGun, "invincible", 1)
         sprites.setDataNumber(myGun, "isShooting", 1)
-        sprites.setDataNumber(myGammon, "isVisible", 1)
+        sprites.setDataNumber(myGun, "isVisible", 1)
         monsterId += 1
     }
-    for (let value11 of tiles.getTilesByType(assets.tile`tGunR`)) {
+    for (let value of tiles.getTilesByType(assets.tile`tGunR`)) {
         myGun = sprites.create(assets.image`sprGunRight`, SpriteKind.Gun)
-        tiles.placeOnTile(myGun, value11)
+        tiles.placeOnTile(myGun, value)
         sprites.setDataNumber(myGun, "id", monsterId)
         sprites.setDataString(myGun, "monster", "gunright")
         sprites.setDataString(myGun, "talk", "")
@@ -1002,7 +1001,7 @@ function spawnMonsters () {
     }
     tiles.replaceAllTiles(assets.tile`tGunL`, assets.tile`tFloorGrey`)
     tiles.replaceAllTiles(assets.tile`tGunR`, assets.tile`tFloorGrey`)
-    for (let value11 of tiles.getTilesByType(assets.tile`tBoss`)) {
+    for (let value of tiles.getTilesByType(assets.tile`tBoss`)) {
         myGammon = sprites.create(assets.image`sprGammon`, SpriteKind.Enemy)
         myGammon.setPosition(32, 48)
         sprites.setDataNumber(myGammon, "id", monsterId)
@@ -1310,7 +1309,6 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.HeartContainer, function (sprite
     music.jumpDown.play()
 })
 function checkSaveGame () {
-    console.log("checkSavedGame")
     if (blockSettings.exists("playerX")) {
         playerChoosing = true
         story.showPlayerChoices("Continue", "New Game")
@@ -1319,7 +1317,6 @@ function checkSaveGame () {
             blockSettings.clear()
             return false
         } else {
-            console.log("Continue")
             return true
         }
     }
@@ -1390,7 +1387,6 @@ function makeBlinkingAnimation (spr: Sprite) {
 }
 // Initialize game wide variables/settings and initialize certain sprites so they don't cause errors
 function initializeGame () {
-    console.log("initializeGame")
     music.stopAllSounds()
     music.setVolume(100)
     monsterId = 1
@@ -1444,9 +1440,7 @@ function initializeGame () {
     yellowPlaced = true
 }
 function bossDies (monster: Sprite) {
-    console.log("bossDies")
     if (currentLevel == 10) {
-        console.log("gurg is dead")
         monster.setVelocity(0, 0)
         story.startCutscene(function () {
             story.spriteSayText(monster, "GREAT")
@@ -1493,7 +1487,6 @@ function bossDies (monster: Sprite) {
             }
         }
         if (sprites.readDataString(monster, "monster") == "paco") {
-            console.log("paco is dead")
             myPaco.setVelocity(0, 0)
             story.startCutscene(function () {
                 story.spriteSayText(monster, "so....")
@@ -1522,7 +1515,6 @@ function bossDies (monster: Sprite) {
     }
     if (currentLevel == 12) {
         if (sprites.readDataString(monster, "monster") == "shickenbelly") {
-            console.log("shicken is dead")
             sprites.setDataNumber(myShicken, "isShooting", 0)
             myShicken.setVelocity(0, 0)
             story.startCutscene(function () {
@@ -1567,7 +1559,6 @@ function bossDies (monster: Sprite) {
         }
     }
     if (currentLevel == 13) {
-        console.log("bald head is dead")
         monster.setVelocity(0, 0)
         story.startCutscene(function () {
             story.spriteSayText(monster, "shmeh")
@@ -1598,7 +1589,7 @@ function bossDies (monster: Sprite) {
         console.log("Gammon is dead")
         monster.setVelocity(0, 0)
         story.startCutscene(function () {
-            story.spriteSayText(monster, "I will come back one day")
+            story.spriteSayText(monster, "I don't like it.")
             playMusic("gammondeath")
         })
         scene.cameraShake(4, 1000)
@@ -1659,7 +1650,6 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Ammo, function (sprite, otherSpr
     otherSprite.destroy()
 })
 function doCutScene (scene2: number) {
-    console.log("doCutScene")
     story.startCutscene(function () {
         controller.moveSprite(dink, 0, 0)
         dink.setFlag(SpriteFlag.Invisible, true)
@@ -1687,8 +1677,6 @@ function doCutScene (scene2: number) {
             myFromMorph = sprites.create(assets.image`sprPurpleWall`, SpriteKind.Morph)
             myToMorph = sprites.create(assets.image`sprGreyTile`, SpriteKind.Morph)
             tiles.placeOnTile(myFromMorph, tiles.getTileLocation(8, 4))
-        } else {
-        	
         }
         myToMorph.setFlag(SpriteFlag.Invisible, true)
         scene.centerCameraAt(80, 70)
@@ -1699,7 +1687,6 @@ function doCutScene (scene2: number) {
         })
     })
     timer.after(4000, function () {
-        console.log("after 4 seconds")
         dink.setFlag(SpriteFlag.Invisible, false)
         for (let value of sprites.allOfKind(SpriteKind.Orb)) {
             value.setFlag(SpriteFlag.Invisible, false)
@@ -1752,7 +1739,6 @@ sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSp
     damagePlayer(sprite, true)
 })
 function loadGame () {
-    console.log("loadGame")
     transitioning = true
     dink.setPosition(blockSettings.readNumber("playerX"), blockSettings.readNumber("playerY"))
     currentLevel = blockSettings.readNumber("currentLevel")
@@ -1841,11 +1827,8 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 // Save the game using settings extension
 function saveGame () {
-    console.log("saving")
     blockSettings.writeNumber("playerX", dink.x)
     blockSettings.writeNumber("playerY", dink.y)
-    console.logValue("save x", dink.x)
-    console.logValue("save x", dink.y)
     blockSettings.writeNumber("currentLevel", currentLevel)
     blockSettings.writeNumber("numOrbs", sprites.readDataNumber(dink, "numOrbs"))
     blockSettings.writeNumber("hasBow", sprites.readDataNumber(dink, "hasBow"))
@@ -1881,19 +1864,16 @@ function saveGame () {
 }
 function setTheScene (level: number, style: number) {
     if (style == 0) {
-        console.log("openWorldLevel")
         platformFlag = false
         dink.ay = 0
         controller.moveSprite(dink, 50, 50)
     } else {
-        console.log("platformLevel")
         platformFlag = true
         dink.ay = 300
         controller.moveSprite(dink, 50, 0)
         lastDirection = 1
     }
     if (level == 0) {
-        console.log("IntroScene")
         scroller.scrollBackgroundWithSpeed(randint(-5, -10), 0)
         myKing = sprites.create(assets.image`sprKing`, SpriteKind.Special)
         sprites.setDataString(myKing, "name", "king")
@@ -1906,7 +1886,6 @@ function setTheScene (level: number, style: number) {
         )
     }
     if (level == 1) {
-        console.log("worldMap")
         if (greenPlaced) {
             mySprite = sprites.create(assets.image`sprMorphSouth`, SpriteKind.NewWall)
             tiles.placeOnTile(mySprite, tiles.getTileLocation(2, 19))
@@ -1929,13 +1908,13 @@ function setTheScene (level: number, style: number) {
         }
     }
     if (level == 2) {
-        for (let value14 of tiles.getTilesByType(tiles.util.object5)) {
+        for (let value of tiles.getTilesByType(tiles.util.object5)) {
             myHouse = sprites.create(assets.image`sprRedHouse`, SpriteKind.House)
-            tiles.placeOnTile(myHouse, value14)
+            tiles.placeOnTile(myHouse, value)
         }
-        for (let value15 of tiles.getTilesByType(tiles.util.object7)) {
+        for (let value of tiles.getTilesByType(tiles.util.object7)) {
             myHouse = sprites.create(assets.image`sprPurpleHouse`, SpriteKind.House)
-            tiles.placeOnTile(myHouse, value15)
+            tiles.placeOnTile(myHouse, value)
         }
         myNPC1 = sprites.create(assets.image`sprSteve`, SpriteKind.NPC)
         animation.runImageAnimation(
@@ -1958,28 +1937,27 @@ function setTheScene (level: number, style: number) {
         500,
         true
         )
-        for (let value16 of tiles.getTilesByType(tiles.util.object1)) {
-            tiles.placeOnTile(myNPC1, value16)
+        for (let value of tiles.getTilesByType(tiles.util.object1)) {
+            tiles.placeOnTile(myNPC1, value)
             tiles.coverAllTiles(tiles.util.object1, sprites.castle.tilePath5)
         }
-        for (let value17 of tiles.getTilesByType(tiles.util.object3)) {
-            tiles.placeOnTile(myNPC2, value17)
+        for (let value of tiles.getTilesByType(tiles.util.object3)) {
+            tiles.placeOnTile(myNPC2, value)
             tiles.coverAllTiles(tiles.util.object3, sprites.castle.tilePath5)
         }
-        for (let value18 of tiles.getTilesByType(tiles.util.object9)) {
-            tiles.placeOnTile(myNPC3, value18)
+        for (let value of tiles.getTilesByType(tiles.util.object9)) {
+            tiles.placeOnTile(myNPC3, value)
             tiles.coverAllTiles(tiles.util.object9, sprites.castle.tilePath5)
         }
     }
     if (level == 3) {
-        console.log("forestDungeon")
         tilemapLst[level] = tiles.createMap(tilemap`tmForest`)
-        for (let value182 of tiles.getTilesByType(assets.tile`myTile9`)) {
+        for (let value of tiles.getTilesByType(assets.tile`myTile9`)) {
             if (sprites.readDataNumber(dink, "hasBow") == 0) {
                 myChest = sprites.create(assets.image`sprChest`, SpriteKind.Item)
-                tiles.placeOnTile(myChest, value182)
+                tiles.placeOnTile(myChest, value)
             }
-            tiles.setTileAt(value182, assets.tile`transparency16`)
+            tiles.setTileAt(value, assets.tile`transparency16`)
         }
     }
     if (level == 4) {
@@ -2018,21 +1996,20 @@ function setTheScene (level: number, style: number) {
         500,
         true
         )
-        for (let value16 of tiles.getTilesByType(tiles.util.object11)) {
-            tiles.placeOnTile(myNPC4, value16)
+        for (let value of tiles.getTilesByType(tiles.util.object11)) {
+            tiles.placeOnTile(myNPC4, value)
             tiles.coverAllTiles(tiles.util.object11, assets.tile`tBrownFloor3`)
         }
-        for (let value16 of tiles.getTilesByType(assets.tile`tCounter`)) {
+        for (let value of tiles.getTilesByType(assets.tile`tCounter`)) {
             myHouse = sprites.create(assets.image`sprCounter`, SpriteKind.House)
-            tiles.placeOnTile(myHouse, value16)
+            tiles.placeOnTile(myHouse, value)
         }
-        for (let value14 of tiles.getTilesByType(assets.tile`tBed`)) {
+        for (let value of tiles.getTilesByType(assets.tile`tBed`)) {
             myHouse = sprites.create(assets.image`sprBed`, SpriteKind.House)
-            tiles.placeOnTile(myHouse, value14)
+            tiles.placeOnTile(myHouse, value)
         }
     }
     if (level == 9) {
-        console.log("Gammon's Castle")
         playMusic("gammon")
         tilemapLst[level] = tiles.createMap(tilemap`tCastle`)
         for (let value of tiles.getTilesByType(assets.tile`tArrowDrop`)) {
@@ -2069,7 +2046,6 @@ function setTheScene (level: number, style: number) {
         }
     }
     if (level == 12) {
-        console.log("setDesertArena")
         bossBattle = true
         tilemapLst[level] = tiles.createMap(tilemap`tmDesertArena`)
         myBomb = sprites.create(assets.image`sprBomb`, SpriteKind.Item)
@@ -2079,11 +2055,9 @@ function setTheScene (level: number, style: number) {
         tiles.placeOnTile(myCannon, tiles.getTileLocation(8, 14))
     }
     if (level == 13) {
-        console.log("Hot Bald Head")
         bossBattle = true
     }
     if (level == 14) {
-        console.log("Gauntlet")
         tilemapLst[level] = tiles.createMap(tilemap`tmGauntlet`)
         for (let value of tiles.getTilesByType(assets.tile`tArrowDrop`)) {
             if (sprites.readDataNumber(dink, "hasBow") == 1) {
@@ -2645,7 +2619,6 @@ function createDatabase () {
     "\"Gammon\"",
     "Ending Scene"
     ]
-    console.log(locationLength)
 }
 function createDropProjectile (sprVictim: Sprite, sprAttacker: Sprite, speed: number, xoffset: number, yoffset: number, myImage: Image, direction: number) {
     angleToTarget = Math.atan2(sprVictim.y - sprAttacker.y, sprVictim.x - sprAttacker.x)
