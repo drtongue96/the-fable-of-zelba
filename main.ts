@@ -449,8 +449,30 @@ function playMusic (song: string) {
             music.playTone(311, music.beat(BeatFraction.Whole))
             music.playTone(349, music.beat(BeatFraction.Double))
         })
+    } else if (song == "gammondeath") {
+        music.setTempo(120)
+        timer.background(function () {
+            music.rest(music.beat(BeatFraction.Whole))
+            music.playTone(147, music.beat(BeatFraction.Triplet))
+            music.playTone(147, music.beat(BeatFraction.Triplet))
+            music.playTone(147, music.beat(BeatFraction.Triplet))
+            music.playTone(147, music.beat(BeatFraction.Half))
+            music.rest(music.beat(BeatFraction.Half))
+            music.rest(music.beat(BeatFraction.Half))
+            music.playTone(147, music.beat(BeatFraction.Half))
+            music.playTone(175, music.beat(BeatFraction.Double))
+            music.playTone(196, music.beat(BeatFraction.Double))
+            music.playTone(185, music.beat(BeatFraction.Breve))
+        })
     } else {
-    	
+        timer.background(function () {
+            music.playTone(294, music.beat(BeatFraction.Whole))
+            music.rest(music.beat(BeatFraction.Whole))
+            music.rest(music.beat(BeatFraction.Double))
+            music.playTone(233, music.beat(BeatFraction.Double))
+            music.playTone(262, music.beat(BeatFraction.Double))
+            music.playTone(294, music.beat(BeatFraction.Breve))
+        })
     }
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -1577,7 +1599,7 @@ function bossDies (monster: Sprite) {
         monster.setVelocity(0, 0)
         story.startCutscene(function () {
             story.spriteSayText(monster, "I will come back one day")
-            playMusic("baldhead")
+            playMusic("gammondeath")
         })
         scene.cameraShake(4, 1000)
         monster.destroy(effects.disintegrate, 2000)
