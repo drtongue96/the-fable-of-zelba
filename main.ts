@@ -512,23 +512,23 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`tSandOuch`, function (sprite,
 })
 // Initialize the player's data
 function initializePlayer () {
-    maxHealth = 10
+    maxHealth = 6
+    playerLife = 6
     dink = sprites.create(assets.image`sprDink0`, SpriteKind.Player)
     dink.setFlag(SpriteFlag.Invisible, true)
     sprites.setDataNumber(dink, "swordDamage", 1)
-    sprites.setDataNumber(dink, "hasBow", 1)
-    sprites.setDataNumber(dink, "hasGreenOrb", 1)
-    sprites.setDataNumber(dink, "hasBlueOrb", 1)
-    sprites.setDataNumber(dink, "hasYellowOrb", 1)
-    sprites.setDataNumber(dink, "hasRedOrb", 1)
-    sprites.setDataNumber(dink, "numArrows", 30)
+    sprites.setDataNumber(dink, "hasBow", 0)
+    sprites.setDataNumber(dink, "hasGreenOrb", 0)
+    sprites.setDataNumber(dink, "hasBlueOrb", 0)
+    sprites.setDataNumber(dink, "hasYellowOrb", 0)
+    sprites.setDataNumber(dink, "hasRedOrb", 0)
+    sprites.setDataNumber(dink, "numArrows", 0)
     sprites.setDataNumber(dink, "maxArrows", 30)
-    sprites.setDataNumber(dink, "numOrbs", 4)
+    sprites.setDataNumber(dink, "numOrbs", 0)
     sprites.setDataNumber(dink, "gravity", 400)
     sprites.setDataNumber(dink, "invincibilityPeriod", 2000)
     sprites.setDataNumber(dink, "numBombs", 0)
     sprites.setDataNumber(dink, "hasPotion", 0)
-    playerLife = 10
     sword = sprites.create(assets.image`sprBlank`, SpriteKind.Sword)
     arrow = sprites.create(assets.image`sprBlank`, SpriteKind.Arrow)
     dink.z = 10
@@ -1227,6 +1227,17 @@ function startGame () {
     if (checkSaveGame()) {
         loadGame()
     } else {
+        if (debugMode) {
+            maxHealth = 10
+            playerLife = 10
+            sprites.setDataNumber(dink, "hasBow", 1)
+            sprites.setDataNumber(dink, "hasGreenOrb", 1)
+            sprites.setDataNumber(dink, "hasBlueOrb", 1)
+            sprites.setDataNumber(dink, "hasYellowOrb", 1)
+            sprites.setDataNumber(dink, "hasRedOrb", 1)
+            sprites.setDataNumber(dink, "numArrows", 30)
+            sprites.setDataNumber(dink, "numOrbs", 4)
+        }
         setupLevel(currentLevel, 1, 5, true)
     }
 }
@@ -2864,9 +2875,13 @@ let levelStart: tiles.Location = null
 let tilemapLst: tiles.WorldMap[] = []
 let currentLevel = 0
 let dink: Sprite = null
-console.log("on start")
+let debugMode = false
+debugMode = false
 if (controller.B.isPressed()) {
     clearSave()
+}
+if (controller.A.isPressed()) {
+    debugMode = true
 }
 scene.setBackgroundColor(6)
 spriteutils.setConsoleOverlay(false)
