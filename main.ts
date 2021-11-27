@@ -771,9 +771,8 @@ function spawnMonsters () {
         monsterId += 1
     }
     for (let value of tiles.getTilesByType(assets.tile`tFrog`)) {
-        let value11: tiles.Location = null
         myEnemy = sprites.create(assets.image`sprFrog`, SpriteKind.Enemy)
-        tiles.placeOnTile(myEnemy, value11)
+        tiles.placeOnTile(myEnemy, value)
         sprites.setDataNumber(myEnemy, "id", monsterId)
         sprites.setDataString(myEnemy, "monster", "froggy")
         sprites.setDataString(myEnemy, "talk", "beh")
@@ -1087,7 +1086,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`tRedGem`, function (sprite, l
 })
 function backToStart (level: number) {
     animation.runImageAnimation(
-    mySprite,
+    dink,
     assets.animation`animDeath`,
     200,
     false
@@ -1323,11 +1322,7 @@ function checkSaveGame () {
     return false
 }
 function damagePlayer (source: Sprite, kb: boolean) {
-    console.logValue("playerLife", playerLife)
     playerLife += -1
-    if (playerLife != 0) {
-    	
-    }
     controller.moveSprite(dink, 0, 0)
     characterAnimations.setCharacterAnimationsEnabled(dink, false)
     if (playerLife == 0) {
@@ -1809,14 +1804,6 @@ function specialTalks (sprite: Sprite) {
     } else {
     	
     }
-}
-function createFollowingProjectileBackup (sprVictim: Sprite, sprAttacker: Sprite, speed: number, xoffset: number, yoffset: number, myImage: Image, pingpong: number) {
-    angleToTarget = Math.atan2(sprVictim.y - sprAttacker.y, sprVictim.x - sprAttacker.x)
-    myFireBall = sprites.createProjectileFromSide(myImage, 50, 50)
-    myFireBall.setKind(SpriteKind.FireBall)
-    myFireBall.setPosition(sprAttacker.x + xoffset, sprAttacker.y + yoffset)
-    myFireBall.setVelocity(Math.cos(angleToTarget) * speed, Math.sin(angleToTarget) * speed)
-    sprites.setDataNumber(myFireBall, "pingpong", pingpong)
 }
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     if (story.isMenuOpen()) {
@@ -2767,13 +2754,6 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
     damageMonster(otherSprite, sprite, true, true)
 })
 // Game setup, which calls the 3 setup functions and the first level (0)
-let locActive = 0
-let locToY = 0
-let locToX = 0
-let locToMap = 0
-let locY = 0
-let locX = 0
-let locMap = 0
 let newOrb: Sprite = null
 let shickenDirection = 0
 let playerX = 0
@@ -2976,15 +2956,15 @@ game.onUpdateInterval(900, function () {
     }
 })
 game.onUpdateInterval(500, function () {
-    for (let value19 of sprites.allOfKind(SpriteKind.Special)) {
-        if (spriteutils.distanceBetween(value19, dink) < 16) {
-            specialTalks(value19)
+    for (let value of sprites.allOfKind(SpriteKind.Special)) {
+        if (spriteutils.distanceBetween(value, dink) < 16) {
+            specialTalks(value)
         }
     }
-    for (let value21 of sprites.allOfKind(SpriteKind.Enemy)) {
-        if (sprites.readDataNumber(value21, "followDistance") > 0) {
-            if (spriteutils.distanceBetween(value21, dink) < sprites.readDataNumber(value21, "followDistance")) {
-                enemyChase(value21)
+    for (let value of sprites.allOfKind(SpriteKind.Enemy)) {
+        if (sprites.readDataNumber(value, "followDistance") > 0) {
+            if (spriteutils.distanceBetween(value, dink) < sprites.readDataNumber(value, "followDistance")) {
+                enemyChase(value)
             }
         }
     }
@@ -3052,33 +3032,6 @@ game.onUpdateInterval(500, function () {
         newOrb.setFlag(SpriteFlag.RelativeToCamera, true)
         newOrb.top = 96
         newOrb.left = 10
-    }
-})
-game.onUpdateInterval(100, function () {
-    for (let index = 0; index <= locationLength; index++) {
-        locMap = locationList[index][0]
-        locX = locationList[index][1]
-        locY = locationList[index][2]
-        locToMap = locationList[index][3]
-        locToX = locationList[index][4]
-        locToY = locationList[index][5]
-        locActive = locationList[index][6]
-        if (locActive == 1) {
-            if (locMap == currentLevel) {
-                if (spriteInTile(dink.x, dink.y, locX, locY)) {
-                    if (!(transitioning)) {
-                        transitioning = true
-                        setupLevel(locToMap, locToX, locToY, true)
-                        break;
-                    }
-                }
-            }
-        }
-    }
-    for (let value23 of sprites.allOfKind(SpriteKind.FireBall)) {
-        if (value23.isHittingTile(CollisionDirection.Left) || (value23.isHittingTile(CollisionDirection.Right) || (value23.isHittingTile(CollisionDirection.Top) || value23.isHittingTile(CollisionDirection.Bottom)))) {
-            value23.destroy(effects.disintegrate, 100)
-        }
     }
 })
 game.onUpdateInterval(1200, function () {
