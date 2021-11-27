@@ -516,18 +516,18 @@ function initializePlayer () {
     dink = sprites.create(assets.image`sprDink0`, SpriteKind.Player)
     dink.setFlag(SpriteFlag.Invisible, true)
     sprites.setDataNumber(dink, "swordDamage", 1)
-    sprites.setDataNumber(dink, "hasBow", 1)
-    sprites.setDataNumber(dink, "hasGreenOrb", 1)
-    sprites.setDataNumber(dink, "hasBlueOrb", 1)
-    sprites.setDataNumber(dink, "hasYellowOrb", 1)
-    sprites.setDataNumber(dink, "hasRedOrb", 1)
-    sprites.setDataNumber(dink, "numArrows", 20)
+    sprites.setDataNumber(dink, "hasBow", 0)
+    sprites.setDataNumber(dink, "hasGreenOrb", 0)
+    sprites.setDataNumber(dink, "hasBlueOrb", 0)
+    sprites.setDataNumber(dink, "hasYellowOrb", 0)
+    sprites.setDataNumber(dink, "hasRedOrb", 0)
+    sprites.setDataNumber(dink, "numArrows", 0)
     sprites.setDataNumber(dink, "maxArrows", 30)
-    sprites.setDataNumber(dink, "numOrbs", 4)
+    sprites.setDataNumber(dink, "numOrbs", 0)
     sprites.setDataNumber(dink, "gravity", 400)
     sprites.setDataNumber(dink, "invincibilityPeriod", 2000)
     sprites.setDataNumber(dink, "numBombs", 0)
-    sprites.setDataNumber(dink, "hasPotion", 1)
+    sprites.setDataNumber(dink, "hasPotion", 0)
     playerLife = 10
     sword = sprites.create(assets.image`sprBlank`, SpriteKind.Sword)
     arrow = sprites.create(assets.image`sprBlank`, SpriteKind.Arrow)
@@ -1434,10 +1434,10 @@ function initializeGame () {
     myShicken = sprites.create(assets.image`sprBlank`, SpriteKind.Enemy)
     myBelly = sprites.create(assets.image`sprBlank`, SpriteKind.Enemy)
     myBald = sprites.create(assets.image`sprBlank`, SpriteKind.Enemy)
-    greenPlaced = true
-    bluePlaced = true
-    redPlaced = true
-    yellowPlaced = true
+    greenPlaced = false
+    bluePlaced = false
+    redPlaced = false
+    yellowPlaced = false
 }
 function bossDies (monster: Sprite) {
     if (currentLevel == 10) {
@@ -1794,7 +1794,8 @@ function specialTalks (sprite: Sprite) {
                 story.startCutscene(function () {
                     story.printDialog("No cash register yet.  But take this SHERRY IN A BOTTLE", 80, 40, 50, 150)
                 })
-                sprites.setDataNumber(dink, "hasPotion", 1)
+                myHeart = sprites.create(assets.image`sprPotion`, SpriteKind.Food)
+                tiles.placeOnTile(myHeart, tiles.getTileLocation(5, 1))
             } else {
                 story.startCutscene(function () {
                     story.printDialog("Be safe out there.", 80, 40, 50, 150)
@@ -2021,6 +2022,7 @@ function setTheScene (level: number, style: number) {
         }
         for (let value of tiles.getTilesByType(assets.tile`tHeart`)) {
             myHeart = sprites.create(assets.image`sprHeart`, SpriteKind.Food)
+            sprites.setDataString(myHeart, "food", "heart")
             tiles.placeOnTile(myHeart, value)
             tiles.replaceAllTiles(assets.tile`tHeart`, assets.tile`tFloorGrey`)
         }
@@ -2068,12 +2070,21 @@ function setTheScene (level: number, style: number) {
         }
         for (let value of tiles.getTilesByType(assets.tile`tHeart`)) {
             myHeart = sprites.create(assets.image`sprHeart`, SpriteKind.Food)
-            tiles.placeOnTile(myQuiver, value)
+            sprites.setDataString(myHeart, "food", "heart")
+            tiles.placeOnTile(myHeart, value)
             tiles.replaceAllTiles(assets.tile`tHeart`, assets.tile`tFloorGrey`)
         }
     }
     if (level == 15) {
-        console.log("Gammon")
+        tilemapLst[level] = tiles.createMap(tilemap`tmGauntlet`)
+        for (let value of tiles.getTilesByType(assets.tile`tPotion`)) {
+            if (sprites.readDataNumber(dink, "hasPotion") == 0) {
+                myHeart = sprites.create(assets.image`sprPotion`, SpriteKind.Food)
+                sprites.setDataString(myHeart, "food", "potion")
+                tiles.placeOnTile(myHeart, value)
+            }
+            tiles.replaceAllTiles(assets.tile`tPotion`, assets.tile`tFloorGrey`)
+        }
         gammonPosition = 0
         gammonPlaced = false
         gammonPingPongActive = false
@@ -2194,9 +2205,16 @@ sprites.onOverlap(SpriteKind.Sword, SpriteKind.Enemy, function (sprite, otherSpr
     damageMonster(otherSprite, sprite, true, false)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
-    increaseHearts(1)
+    if (sprites.readDataString(otherSprite, "food") == "heart") {
+        increaseHearts(1)
+        music.jumpUp.play()
+    } else if (sprites.readDataString(otherSprite, "food") == "potion") {
+        if (sprites.readDataNumber(dink, "hasPotion") == 0) {
+            sprites.setDataNumber(dink, "hasPotion", 1)
+            music.magicWand.play()
+        }
+    }
     otherSprite.destroy()
-    music.jumpUp.play()
 })
 function createDatabase () {
     locationList = [
