@@ -517,13 +517,13 @@ function initializePlayer () {
     dink.setFlag(SpriteFlag.Invisible, true)
     sprites.setDataNumber(dink, "swordDamage", 1)
     sprites.setDataNumber(dink, "hasBow", 0)
-    sprites.setDataNumber(dink, "hasGreenOrb", 0)
-    sprites.setDataNumber(dink, "hasBlueOrb", 0)
+    sprites.setDataNumber(dink, "hasGreenOrb", 1)
+    sprites.setDataNumber(dink, "hasBlueOrb", 1)
     sprites.setDataNumber(dink, "hasYellowOrb", 0)
     sprites.setDataNumber(dink, "hasRedOrb", 0)
     sprites.setDataNumber(dink, "numArrows", 0)
     sprites.setDataNumber(dink, "maxArrows", 30)
-    sprites.setDataNumber(dink, "numOrbs", 0)
+    sprites.setDataNumber(dink, "numOrbs", 2)
     sprites.setDataNumber(dink, "gravity", 400)
     sprites.setDataNumber(dink, "invincibilityPeriod", 2000)
     sprites.setDataNumber(dink, "numBombs", 0)
@@ -1326,20 +1326,26 @@ function damagePlayer (source: Sprite, kb: boolean) {
     controller.moveSprite(dink, 0, 0)
     characterAnimations.setCharacterAnimationsEnabled(dink, false)
     if (playerLife == 0) {
-        dink.setFlag(SpriteFlag.Ghost, true)
-        playMusic("death")
-        tiles.destroySpritesOfKind(SpriteKind.Enemy)
-        tiles.destroySpritesOfKind(SpriteKind.Projectile)
-        animation.runImageAnimation(
-        dink,
-        assets.animation`animDeath`,
-        150,
-        true
-        )
-        timer.after(2500, function () {
-            dink.destroy()
-            startGame()
-        })
+        if (sprites.readDataNumber(dink, "hasPotion") == 1) {
+            playerLife = maxHealth
+            sprites.setDataNumber(dink, "hasPotion", 0)
+            music.magicWand.play()
+        } else {
+            dink.setFlag(SpriteFlag.Ghost, true)
+            playMusic("death")
+            tiles.destroySpritesOfKind(SpriteKind.Enemy)
+            tiles.destroySpritesOfKind(SpriteKind.Projectile)
+            animation.runImageAnimation(
+            dink,
+            assets.animation`animDeath`,
+            150,
+            true
+            )
+            timer.after(2500, function () {
+                dink.destroy()
+                startGame()
+            })
+        }
     } else {
         music.playTone(784, music.beat(BeatFraction.Sixteenth))
         music.playTone(880, music.beat(BeatFraction.Sixteenth))
@@ -1409,6 +1415,7 @@ function initializeGame () {
     myNPC2 = sprites.create(assets.image`sprBlank`, SpriteKind.Player)
     myNPC3 = sprites.create(assets.image`sprBlank`, SpriteKind.Player)
     myKing = sprites.create(assets.image`sprBlank`, SpriteKind.Player)
+    myZelba = sprites.create(assets.image`sprBlank`, SpriteKind.Player)
     shootingArrow = 0
     myArrows = textsprite.create("")
     myArrows.setOutline(1, 15)
@@ -1790,6 +1797,7 @@ function specialTalks (sprite: Sprite) {
                     story.printDialog("No cash register yet.  But take this SHERRY IN A BOTTLE", 80, 40, 50, 150)
                 })
                 myHeart = sprites.create(assets.image`sprPotion`, SpriteKind.Food)
+                sprites.setDataString(myHeart, "food", "potion")
                 tiles.placeOnTile(myHeart, tiles.getTileLocation(5, 1))
             } else {
                 story.startCutscene(function () {
@@ -2964,7 +2972,7 @@ game.onUpdateInterval(900, function () {
 })
 game.onUpdateInterval(500, function () {
     for (let value of sprites.allOfKind(SpriteKind.Special)) {
-        if (spriteutils.distanceBetween(value, dink) < 16) {
+        if (spriteutils.distanceBetween(value, dink) < 24) {
             specialTalks(value)
         }
     }
@@ -3033,8 +3041,8 @@ game.onUpdateInterval(500, function () {
             newOrb.left = 79
         }
     }
+    tiles.destroySpritesOfKind(SpriteKind.Potion)
     if (sprites.readDataNumber(dink, "hasPotion") == 1) {
-        tiles.destroySpritesOfKind(SpriteKind.Potion)
         newOrb = sprites.create(assets.image`sprPotion`, SpriteKind.Potion)
         newOrb.setFlag(SpriteFlag.RelativeToCamera, true)
         newOrb.top = 96
@@ -3088,6 +3096,13 @@ game.onUpdateInterval(1200, function () {
     }
 })
 game.onUpdateInterval(3000, function () {
+    if (bossBattle) {
+        if (currentLevel == 10) {
+            myGurg.setPosition(myGurg.x + randint(-15, 15), myGurg.y + randint(-15, 15))
+        }
+    }
+})
+game.onUpdateInterval(3000, function () {
     if (currentLevel == 15) {
         if (!(gammonPlaced) && !(gannonIncapacitated)) {
             sprites.setDataNumber(myGammon, "isShooting", 0)
@@ -3111,13 +3126,6 @@ game.onUpdateInterval(3000, function () {
                     sprites.setDataNumber(myGammon, "isShooting", 1)
                 })
             }
-        }
-    }
-})
-game.onUpdateInterval(3000, function () {
-    if (bossBattle) {
-        if (currentLevel == 10) {
-            myGurg.setPosition(myGurg.x + randint(-15, 15), myGurg.y + randint(-15, 15))
         }
     }
 })
