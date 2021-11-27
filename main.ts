@@ -516,14 +516,14 @@ function initializePlayer () {
     dink = sprites.create(assets.image`sprDink0`, SpriteKind.Player)
     dink.setFlag(SpriteFlag.Invisible, true)
     sprites.setDataNumber(dink, "swordDamage", 1)
-    sprites.setDataNumber(dink, "hasBow", 0)
+    sprites.setDataNumber(dink, "hasBow", 1)
     sprites.setDataNumber(dink, "hasGreenOrb", 1)
     sprites.setDataNumber(dink, "hasBlueOrb", 1)
-    sprites.setDataNumber(dink, "hasYellowOrb", 0)
-    sprites.setDataNumber(dink, "hasRedOrb", 0)
-    sprites.setDataNumber(dink, "numArrows", 0)
+    sprites.setDataNumber(dink, "hasYellowOrb", 1)
+    sprites.setDataNumber(dink, "hasRedOrb", 1)
+    sprites.setDataNumber(dink, "numArrows", 30)
     sprites.setDataNumber(dink, "maxArrows", 30)
-    sprites.setDataNumber(dink, "numOrbs", 2)
+    sprites.setDataNumber(dink, "numOrbs", 4)
     sprites.setDataNumber(dink, "gravity", 400)
     sprites.setDataNumber(dink, "invincibilityPeriod", 2000)
     sprites.setDataNumber(dink, "numBombs", 0)
@@ -1723,9 +1723,10 @@ function doConversation (npcSprite: Sprite, text: string, label: string) {
 }
 function enemyDrops (enemy: Sprite) {
     randomTreasure = randint(0, 1)
-    if (Math.percentChance(33)) {
+    if (Math.percentChance(35)) {
         if (randomTreasure == 0) {
             myHeart = sprites.create(assets.image`sprHeart`, SpriteKind.Food)
+            sprites.setDataString(myHeart, "food", "heart")
             myHeart.x = enemy.x
             myHeart.y = enemy.y
         } else {
@@ -2151,6 +2152,22 @@ function increaseHearts (hearts: number) {
 controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
     stats.turnStats(true)
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`tLava1Ouch`, function (sprite, location) {
+    dink.setFlag(SpriteFlag.GhostThroughTiles, true)
+    damagePlayer(sprite, false)
+    timer.after(1000, function () {
+        dink.setFlag(SpriteFlag.GhostThroughTiles, false)
+        backToStart(currentLevel)
+    })
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`tLava2Ouch`, function (sprite, location) {
+    dink.setFlag(SpriteFlag.GhostThroughTiles, true)
+    damagePlayer(sprite, false)
+    timer.after(1000, function () {
+        dink.setFlag(SpriteFlag.GhostThroughTiles, false)
+        backToStart(currentLevel)
+    })
+})
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tBlueGem`, function (sprite, location) {
     if (sprites.readDataNumber(dink, "hasBlueOrb") == 1) {
         tiles.replaceAllTiles(assets.tile`tBlueGem`, assets.tile`tBlueOrbSpot`)
@@ -2272,8 +2289,8 @@ function createDatabase () {
     21,
     4,
     5,
-    0,
-    9,
+    1,
+    12,
     1
     ],
     [
