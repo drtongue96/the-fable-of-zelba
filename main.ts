@@ -31,6 +31,8 @@ namespace SpriteKind {
     export const Merchant = SpriteKind.create()
     export const Potion = SpriteKind.create()
     export const Gun = SpriteKind.create()
+    export const Zelba = SpriteKind.create()
+    export const Special = SpriteKind.create()
 }
 namespace StrProp {
     export const Name = StrProp.create()
@@ -84,7 +86,7 @@ function clearSave () {
 }
 function cleanUp () {
     console.log("cleanUp")
-    for (let value of sprites.allOfKind(SpriteKind.King)) {
+    for (let value of sprites.allOfKind(SpriteKind.Special)) {
         value.destroy()
     }
     for (let value2 of sprites.allOfKind(SpriteKind.NPC)) {
@@ -121,9 +123,6 @@ function cleanUp () {
         value7.destroy()
     }
     for (let value7 of sprites.allOfKind(SpriteKind.Wall)) {
-        value7.destroy()
-    }
-    for (let value7 of sprites.allOfKind(SpriteKind.Merchant)) {
         value7.destroy()
     }
     for (let value7 of sprites.allOfKind(SpriteKind.Gun)) {
@@ -1098,10 +1097,9 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                     startTalking()
                     doConversation(myKing, "Defeat GAMMON!", "The King")
                 }
-                if (dink.overlapsWith(mySprite)) {
+                if (dink.overlapsWith(myZelba)) {
                     startTalking()
                     doConversation(mySprite, "Thank you for saving me", "Zelba")
-                    game.over(true, effects.confetti)
                 }
                 if (dink.overlapsWith(myNPC2)) {
                     startTalking()
@@ -1282,15 +1280,6 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 function distanceFormula (x1: number, x2: number, y1: number, y2: number) {
     return Math.sqrt((y1 - y2) ** 2 + (x1 - x2) ** 2)
-}
-function kingTalks (kingSprite: Sprite) {
-    if (sprites.readDataBoolean(kingSprite, "talking")) {
-        return
-    }
-    sprites.setDataBoolean(kingSprite, "talking", true)
-    story.startCutscene(function () {
-        story.printDialog("Hey Dink.  I am the King.  Save the princess ZELBA and defeat GAMMON!", 80, 40, 50, 150)
-    })
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.HeartContainer, function (sprite, otherSprite) {
     maxHealth += 1
@@ -1630,6 +1619,7 @@ tiles.onMapLoaded(function (tilemap2) {
         tiles.coverAllTiles(assets.tile`tRedGem`, assets.tile`tRedOrbSpot`)
         tiles.coverAllTiles(assets.tile`tBald`, sprites.dungeon.floorLight0)
         tiles.coverAllTiles(assets.tile`tBoss`, sprites.dungeon.darkGroundNorthWest0)
+        tiles.coverAllTiles(assets.tile`tFrog`, sprites.castle.tilePath5)
         if (currentLevel == 14) {
             tiles.coverAllTiles(tiles.util.object4, sprites.dungeon.floorLight0)
             tiles.coverAllTiles(tiles.util.object12, sprites.dungeon.floorLight0)
@@ -1710,29 +1700,6 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     transitioning = false
     lastDirection = 1
 })
-function merchantTalks (merchantSprite: Sprite) {
-    if (sprites.readDataBoolean(merchantSprite, "talking")) {
-        return
-    }
-    sprites.setDataBoolean(merchantSprite, "talking", true)
-    if (sprites.readDataNumber(dink, "numOrbs") < 2) {
-        story.startCutscene(function () {
-            story.printDialog("Come back soon.  No stock yet.", 80, 40, 50, 150)
-        })
-    } else {
-        if (sprites.readDataNumber(dink, "hasPotion") == 0) {
-            story.startCutscene(function () {
-                story.printDialog("No cash register yet.  But take this SHERRY IN A BOTTLE", 80, 40, 50, 150)
-            })
-            sprites.setDataNumber(dink, "hasPotion", 1)
-            console.log("got potion")
-        } else {
-            story.startCutscene(function () {
-                story.printDialog("Be safe out there.", 80, 40, 50, 150)
-            })
-        }
-    }
-}
 sprites.onOverlap(SpriteKind.Egg, SpriteKind.Player, function (sprite, otherSprite) {
     sprite.destroy(effects.blizzard, 100)
     damagePlayer(sprite, false)
@@ -1799,6 +1766,40 @@ function loadGame () {
         redPlaced = false
     }
     setupLevel(currentLevel, 999, 999, false)
+}
+function specialTalks (sprite: Sprite) {
+    if (sprites.readDataBoolean(sprite, "talking")) {
+        return
+    }
+    sprites.setDataBoolean(sprite, "talking", true)
+    if (sprites.readDataString(sprite, "name") == "king") {
+        story.startCutscene(function () {
+            story.printDialog("Hey Dink.  I am the King.  Save the princess ZELBA and defeat GAMMON!", 80, 40, 50, 150)
+        })
+    } else if (sprites.readDataString(sprite, "name") == "merchant") {
+        if (sprites.readDataNumber(dink, "numOrbs") < 2) {
+            story.startCutscene(function () {
+                story.printDialog("Come back soon.  No stock yet.", 80, 40, 50, 150)
+            })
+        } else {
+            if (sprites.readDataNumber(dink, "hasPotion") == 0) {
+                story.startCutscene(function () {
+                    story.printDialog("No cash register yet.  But take this SHERRY IN A BOTTLE", 80, 40, 50, 150)
+                })
+                sprites.setDataNumber(dink, "hasPotion", 1)
+            } else {
+                story.startCutscene(function () {
+                    story.printDialog("Be safe out there.", 80, 40, 50, 150)
+                })
+            }
+        }
+    } else if (sprites.readDataString(sprite, "name") == "zelba") {
+        story.startCutscene(function () {
+            story.printDialog("Dink! You're the last person I'd expect to save me.", 80, 40, 50, 150)
+        })
+    } else {
+    	
+    }
 }
 function createFollowingProjectileBackup (sprVictim: Sprite, sprAttacker: Sprite, speed: number, xoffset: number, yoffset: number, myImage: Image, pingpong: number) {
     angleToTarget = Math.atan2(sprVictim.y - sprAttacker.y, sprVictim.x - sprAttacker.x)
@@ -1872,7 +1873,8 @@ function setTheScene (level: number, style: number) {
     if (level == 0) {
         console.log("IntroScene")
         scroller.scrollBackgroundWithSpeed(randint(-5, -10), 0)
-        myKing = sprites.create(assets.image`sprKing`, SpriteKind.King)
+        myKing = sprites.create(assets.image`sprKing`, SpriteKind.Special)
+        sprites.setDataString(myKing, "name", "king")
         tiles.placeOnTile(myKing, tiles.getTileLocation(7, 5))
         animation.runImageAnimation(
         myKing,
@@ -1986,7 +1988,8 @@ function setTheScene (level: number, style: number) {
         }
     }
     if (level == 8) {
-        myNPC4 = sprites.create(assets.image`sprSteve`, SpriteKind.Merchant)
+        myNPC4 = sprites.create(assets.image`sprSteve`, SpriteKind.Special)
+        sprites.setDataString(myNPC4, "name", "merchant")
         animation.runImageAnimation(
         myNPC4,
         assets.animation`animMerchant`,
@@ -2085,8 +2088,9 @@ function setTheScene (level: number, style: number) {
     if (level == 16) {
         console.log("Final Scene")
         for (let value of tiles.getTilesByType(assets.tile`tZelba`)) {
-            mySprite = sprites.create(assets.image`sprZelbaFront`, SpriteKind.NPC)
-            tiles.placeOnTile(mySprite, value)
+            myZelba = sprites.create(assets.image`sprZelba2`, SpriteKind.Special)
+            tiles.placeOnTile(myZelba, value)
+            sprites.setDataString(myZelba, "name", "zelba")
             tiles.replaceAllTiles(assets.tile`tZelba`, assets.tile`tFloorGrey`)
         }
     }
@@ -2797,6 +2801,7 @@ let myBombBlast: Sprite = null
 let myCannon: Sprite = null
 let myNPC3: Sprite = null
 let myNPC2: Sprite = null
+let myZelba: Sprite = null
 let myKing: Sprite = null
 let myNPC1: Sprite = null
 let playerChoosing = false
@@ -2958,14 +2963,9 @@ game.onUpdateInterval(900, function () {
     }
 })
 game.onUpdateInterval(500, function () {
-    for (let value19 of sprites.allOfKind(SpriteKind.King)) {
+    for (let value19 of sprites.allOfKind(SpriteKind.Special)) {
         if (spriteutils.distanceBetween(value19, dink) < 16) {
-            kingTalks(value19)
-        }
-    }
-    for (let value19 of sprites.allOfKind(SpriteKind.Merchant)) {
-        if (spriteutils.distanceBetween(value19, dink) < 32) {
-            merchantTalks(value19)
+            specialTalks(value19)
         }
     }
     for (let value21 of sprites.allOfKind(SpriteKind.Enemy)) {
@@ -3053,7 +3053,6 @@ game.onUpdateInterval(100, function () {
         if (locActive == 1) {
             if (locMap == currentLevel) {
                 if (spriteInTile(dink.x, dink.y, locX, locY)) {
-                    console.log("sprite in tile")
                     if (!(transitioning)) {
                         transitioning = true
                         setupLevel(locToMap, locToX, locToY, true)

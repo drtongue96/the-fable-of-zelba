@@ -2943,6 +2943,25 @@ fffffffffffffffffffffffffffff........
 . . . . . 7 7 7 7 7 7 . . . . . 
 . . . . . . 8 . . 8 . . . . . . 
 `;
+            case "image86":
+            case "sprZelba2":return img`
+. . . . . . 5 5 5 5 5 . . . . . 
+. . . . . 5 d 5 5 5 d 5 . . . . 
+. . . . 5 5 5 d 7 d 5 5 . . . . 
+. . . . 5 5 5 5 d 5 5 5 . . . . 
+. . . 5 5 5 f e 4 4 e f 5 . . . 
+. . . 4 5 5 1 f 4 4 f 1 5 . . . 
+. . . 4 4 5 1 f 4 4 f 1 5 . . . 
+. . . 5 5 5 4 4 4 3 4 4 5 . . . 
+. . . 5 5 5 4 4 4 4 4 5 5 . . . 
+. . . 5 5 5 f f 6 f 5 5 5 . . . 
+. . . 5 5 4 c c f c 4 5 . . . . 
+. . . . 4 4 a c c c 4 4 4 . . . 
+. . . . 4 c c a a a c . . . . . 
+. . . . c c c c c c c c . . . . 
+. . . a c c c c c c c c a . . . 
+. . . a a a a c c c a a a . . . 
+`;
         }
         return null;
     })

@@ -454,6 +454,11 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "sprZelbaFront"
     },
+    "image86": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEVUVQUAqgBVVVRVRcSsUFVVVVVEzKzVVR9B9KzMrFVd/k/0zMrMVddERGTPysxVXUQ09MzKzNVV/k9URMysUFUfQVVFwKwAAFVVVUAAqgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "sprZelba2"
+    },
     "anim12": {
         "namespace": "myAnimations",
         "id": "anim12",
