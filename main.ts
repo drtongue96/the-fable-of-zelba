@@ -2754,6 +2754,13 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
     damageMonster(otherSprite, sprite, true, true)
 })
 // Game setup, which calls the 3 setup functions and the first level (0)
+let locActive = 0
+let locToY = 0
+let locToX = 0
+let locToMap = 0
+let locY = 0
+let locX = 0
+let locMap = 0
 let newOrb: Sprite = null
 let shickenDirection = 0
 let playerX = 0
@@ -3032,6 +3039,28 @@ game.onUpdateInterval(500, function () {
         newOrb.setFlag(SpriteFlag.RelativeToCamera, true)
         newOrb.top = 96
         newOrb.left = 10
+    }
+})
+game.onUpdateInterval(100, function () {
+    for (let index = 0; index <= locationLength; index++) {
+        locMap = locationList[index][0]
+        locX = locationList[index][1]
+        locY = locationList[index][2]
+        locToMap = locationList[index][3]
+        locToX = locationList[index][4]
+        locToY = locationList[index][5]
+        locActive = locationList[index][6]
+        if (locActive == 1) {
+            if (locMap == currentLevel) {
+                if (spriteInTile(dink.x, dink.y, locX, locY)) {
+                    if (!(transitioning)) {
+                        transitioning = true
+                        setupLevel(locToMap, locToX, locToY, true)
+                        break;
+                    }
+                }
+            }
+        }
     }
 })
 game.onUpdateInterval(1200, function () {
