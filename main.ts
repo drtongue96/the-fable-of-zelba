@@ -32,6 +32,10 @@ namespace SpriteKind {
     export const Potion = SpriteKind.create()
     export const Gun = SpriteKind.create()
 }
+namespace StrProp {
+    export const Name = StrProp.create()
+    export const Text = StrProp.create()
+}
 namespace ConnectionKind {
     export const Door3 = ConnectionKind.create()
     export const Door4 = ConnectionKind.create()
@@ -40,10 +44,6 @@ namespace ConnectionKind {
     export const Door7 = ConnectionKind.create()
     export const NoDoor = ConnectionKind.create()
     export const Door8 = ConnectionKind.create()
-}
-namespace StrProp {
-    export const Name = StrProp.create()
-    export const Text = StrProp.create()
 }
 function spriteInRange (spr1: Sprite, spr2: Sprite, range: number) {
     return distanceFormula(spr1.x, spr2.x, spr1.y, spr2.y) <= range
