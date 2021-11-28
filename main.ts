@@ -50,6 +50,17 @@ namespace ConnectionKind {
 function spriteInRange (spr1: Sprite, spr2: Sprite, range: number) {
     return distanceFormula(spr1.x, spr2.x, spr1.y, spr2.y) <= range
 }
+function introScreen () {
+    scene.setBackgroundImage(assets.image`stage`)
+    playMusic("zelba intro")
+    mySprite = sprites.create(assets.image`sprDink0`, SpriteKind.Special)
+    mySprite.setPosition(79, 106)
+    mySprite = sprites.create(assets.image`sprZelba2`, SpriteKind.Special)
+    mySprite.setPosition(96, 90)
+    mySprite = sprites.create(assets.image`sprKing`, SpriteKind.Special)
+    mySprite.setPosition(68, 90)
+    pause(10000)
+}
 sprites.onOverlap(SpriteKind.BombBlast, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprite.destroy(effects.fire, 100)
     damageMonster(otherSprite, sprite, false, false)
@@ -1344,7 +1355,6 @@ function startGame () {
             sprites.setDataNumber(dink, "numArrows", 30)
             sprites.setDataNumber(dink, "numOrbs", 4)
         }
-        blockSettings.clear()
         setupLevel(currentLevel, 1, 5, true)
     }
 }
@@ -2722,6 +2732,7 @@ function finalScene () {
     playMusic("zelba end")
     controller.moveSprite(dink, 0, 0)
     story.startCutscene(function () {
+        effects.confetti.startScreenEffect()
         story.spriteMoveToLocation(myZelba, 32, 48, 50)
         story.spriteMoveToLocation(dink, 64, 48, 50)
         myKing = sprites.create(assets.image`sprKing`, SpriteKind.Player)
@@ -2945,7 +2956,6 @@ let platformFlag = false
 let lastDirection = 0
 let transitioning = false
 let talking = false
-let mySprite: Sprite = null
 let myPortal: Sprite = null
 let styleLst: number[] = []
 let txtLst: string[] = []
@@ -2954,6 +2964,7 @@ let levelStart: tiles.Location = null
 let tilemapLst: tiles.WorldMap[] = []
 let currentLevel = 0
 let dink: Sprite = null
+let mySprite: Sprite = null
 let debugMode = false
 debugMode = true
 if (controller.B.isPressed()) {
@@ -2962,12 +2973,11 @@ if (controller.B.isPressed()) {
 if (controller.A.isPressed()) {
     debugMode = true
 }
-scene.setBackgroundColor(6)
+introScreen()
 spriteutils.setConsoleOverlay(false)
 createDatabase()
-game.setDialogCursor(assets.image`sprDink0`)
-playMusic("zelba intro")
 game.splash("The Fable of Zelba")
+tiles.destroySpritesOfKind(SpriteKind.Special)
 startGame()
 game.onUpdate(function () {
     moving = controller.left.isPressed() || (controller.right.isPressed() || (controller.up.isPressed() || controller.down.isPressed()))
