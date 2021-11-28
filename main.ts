@@ -2282,7 +2282,7 @@ function createDatabase () {
     2,
     19,
     4,
-    0,
+    1,
     9,
     1
     ],
@@ -2378,8 +2378,8 @@ function createDatabase () {
     ],
     [
     4,
-    3,
-    9,
+    47,
+    7,
     11,
     5,
     9,
@@ -2876,7 +2876,7 @@ let tilemapLst: tiles.WorldMap[] = []
 let currentLevel = 0
 let dink: Sprite = null
 let debugMode = false
-debugMode = false
+debugMode = true
 if (controller.B.isPressed()) {
     clearSave()
 }
