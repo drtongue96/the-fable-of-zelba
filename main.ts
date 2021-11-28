@@ -464,7 +464,6 @@ function playMusic (song: string) {
             music.playTone(196, music.beat(BeatFraction.Double))
             music.playTone(185, music.beat(BeatFraction.Breve))
         })
-    } else {
         timer.background(function () {
             music.playTone(294, music.beat(BeatFraction.Whole))
             music.rest(music.beat(BeatFraction.Whole))
@@ -473,6 +472,132 @@ function playMusic (song: string) {
             music.playTone(262, music.beat(BeatFraction.Double))
             music.playTone(294, music.beat(BeatFraction.Breve))
         })
+    } else if (song == "zelba end") {
+        music.setTempo(160)
+        timer.background(function () {
+            music.playTone(415, music.beat(BeatFraction.Breve))
+            music.playTone(370, music.beat(BeatFraction.Half))
+            music.playTone(349, music.beat(BeatFraction.Half))
+            music.playTone(311, music.beat(BeatFraction.Half))
+            music.playTone(277, music.beat(BeatFraction.Half))
+            music.playTone(208, music.beat(BeatFraction.Breve))
+            music.playTone(277, music.beat(BeatFraction.Double))
+            music.playTone(415, music.beat(BeatFraction.Double))
+            music.playTone(440, music.beat(BeatFraction.Half))
+            music.rest(music.beat(BeatFraction.Half))
+            music.playTone(494, music.beat(BeatFraction.Half))
+            music.playTone(440, music.beat(BeatFraction.Half))
+            music.playTone(494, music.beat(BeatFraction.Half))
+            music.playTone(554, music.beat(BeatFraction.Half))
+            music.playTone(554, music.beat(BeatFraction.Half))
+            music.rest(music.beat(BeatFraction.Half))
+            music.playTone(440, music.beat(BeatFraction.Double))
+            music.playTone(415, music.beat(BeatFraction.Whole))
+            music.playTone(440, music.beat(BeatFraction.Double))
+            music.playTone(415, music.beat(BeatFraction.Half))
+            music.playTone(370, music.beat(BeatFraction.Half))
+            music.playTone(370, music.beat(BeatFraction.Whole))
+            music.playTone(415, music.beat(BeatFraction.Breve))
+            music.rest(music.beat(BeatFraction.Whole))
+        })
+        timer.background(function () {
+            music.playTone(247, music.beat(BeatFraction.Whole))
+            music.rest(music.beat(BeatFraction.Whole))
+            music.playTone(247, music.beat(BeatFraction.Whole))
+            music.rest(music.beat(BeatFraction.Half))
+            music.playTone(247, music.beat(BeatFraction.Quarter))
+            music.rest(music.beat(BeatFraction.Quarter))
+            music.playTone(247, music.beat(BeatFraction.Double))
+            music.playTone(139, music.beat(BeatFraction.Breve))
+            music.playTone(175, music.beat(BeatFraction.Double))
+            music.rest(music.beat(BeatFraction.Double))
+            music.playTone(165, music.beat(BeatFraction.Double))
+            music.playTone(220, music.beat(BeatFraction.Breve))
+            music.rest(music.beat(BeatFraction.Double))
+            music.playTone(147, music.beat(BeatFraction.Breve))
+            music.playTone(139, music.beat(BeatFraction.Breve))
+            music.playTone(415, music.beat(BeatFraction.Breve))
+        })
+        timer.background(function () {
+            music.rest(music.beat(BeatFraction.Breve))
+            music.rest(music.beat(BeatFraction.Breve))
+            music.rest(music.beat(BeatFraction.Breve))
+            music.rest(music.beat(BeatFraction.Breve))
+            music.rest(music.beat(BeatFraction.Breve))
+            music.rest(music.beat(BeatFraction.Breve))
+            music.rest(music.beat(BeatFraction.Double))
+            music.playTone(349, music.beat(BeatFraction.Breve))
+            music.playTone(698, music.beat(BeatFraction.Breve))
+        })
+        timer.background(function () {
+            music.playTone(698, music.beat(BeatFraction.Half))
+            music.playTone(622, music.beat(BeatFraction.Half))
+            music.playTone(554, music.beat(BeatFraction.Half))
+            music.playTone(494, music.beat(BeatFraction.Half))
+            music.playTone(466, music.beat(BeatFraction.Half))
+            music.playTone(415, music.beat(BeatFraction.Half))
+            music.playTone(370, music.beat(BeatFraction.Half))
+            music.playTone(349, music.beat(BeatFraction.Half))
+            music.playTone(311, music.beat(BeatFraction.Half))
+            music.playTone(277, music.beat(BeatFraction.Half))
+        })
+    } else if (song == "zelba intro") {
+        music.setTempo(184)
+        timer.background(function () {
+            music.playTone(415, music.beat(BeatFraction.Breve))
+            music.playTone(370, music.beat(BeatFraction.Half))
+            music.playTone(349, music.beat(BeatFraction.Half))
+            music.playTone(311, music.beat(BeatFraction.Half))
+            music.playTone(277, music.beat(BeatFraction.Half))
+            music.playTone(208, music.beat(BeatFraction.Breve))
+            music.playTone(277, music.beat(BeatFraction.Double))
+            music.playTone(415, music.beat(BeatFraction.Double))
+            music.playTone(440, music.beat(BeatFraction.Half))
+            music.rest(music.beat(BeatFraction.Half))
+            music.playTone(494, music.beat(BeatFraction.Half))
+            music.playTone(440, music.beat(BeatFraction.Half))
+            music.playTone(494, music.beat(BeatFraction.Half))
+            music.playTone(554, music.beat(BeatFraction.Half))
+            music.playTone(554, music.beat(BeatFraction.Half))
+            music.rest(music.beat(BeatFraction.Half))
+            music.playTone(440, music.beat(BeatFraction.Double))
+            music.playTone(415, music.beat(BeatFraction.Whole))
+            music.playTone(440, music.beat(BeatFraction.Double))
+            music.playTone(415, music.beat(BeatFraction.Half))
+            music.playTone(370, music.beat(BeatFraction.Half))
+            music.playTone(370, music.beat(BeatFraction.Whole))
+            music.playTone(415, music.beat(BeatFraction.Breve))
+            music.rest(music.beat(BeatFraction.Whole))
+        })
+        timer.background(function () {
+            music.playTone(247, music.beat(BeatFraction.Whole))
+            music.rest(music.beat(BeatFraction.Whole))
+            music.playTone(247, music.beat(BeatFraction.Whole))
+            music.rest(music.beat(BeatFraction.Half))
+            music.playTone(247, music.beat(BeatFraction.Quarter))
+            music.rest(music.beat(BeatFraction.Quarter))
+            music.playTone(247, music.beat(BeatFraction.Double))
+            music.playTone(139, music.beat(BeatFraction.Breve))
+            music.playTone(175, music.beat(BeatFraction.Double))
+            music.rest(music.beat(BeatFraction.Double))
+            music.playTone(165, music.beat(BeatFraction.Double))
+            music.playTone(220, music.beat(BeatFraction.Breve))
+            music.rest(music.beat(BeatFraction.Double))
+            music.playTone(147, music.beat(BeatFraction.Breve))
+            music.playTone(139, music.beat(BeatFraction.Breve))
+        })
+        timer.background(function () {
+            music.rest(music.beat(BeatFraction.Breve))
+            music.rest(music.beat(BeatFraction.Breve))
+            music.rest(music.beat(BeatFraction.Breve))
+            music.rest(music.beat(BeatFraction.Breve))
+            music.rest(music.beat(BeatFraction.Breve))
+            music.rest(music.beat(BeatFraction.Breve))
+            music.rest(music.beat(BeatFraction.Double))
+            music.playTone(349, music.beat(BeatFraction.Breve))
+        })
+    } else {
+    	
     }
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -2064,6 +2189,12 @@ function setTheScene (level: number, style: number) {
         console.log("Final Scene")
         for (let value of tiles.getTilesByType(assets.tile`tZelba`)) {
             myZelba = sprites.create(assets.image`sprZelba2`, SpriteKind.Special)
+            characterAnimations.loopFrames(
+            myZelba,
+            assets.animation`animZelbaIdle`,
+            500,
+            characterAnimations.rule(Predicate.NotMoving)
+            )
             tiles.placeOnTile(myZelba, value)
             sprites.setDataString(myZelba, "name", "zelba")
             tiles.replaceAllTiles(assets.tile`tZelba`, assets.tile`tFloorGrey`)
@@ -2585,12 +2716,18 @@ function createDatabase () {
     ]
 }
 function finalScene () {
-    console.log("finalScene")
+    playMusic("zelba end")
     controller.moveSprite(dink, 0, 0)
     story.startCutscene(function () {
         story.spriteMoveToLocation(myZelba, 32, 48, 50)
         story.spriteMoveToLocation(dink, 64, 48, 50)
         myKing = sprites.create(assets.image`sprKing`, SpriteKind.Player)
+        characterAnimations.loopFrames(
+        myKing,
+        assets.animation`animKing`,
+        500,
+        characterAnimations.rule(Predicate.NotMoving)
+        )
         story.spriteMoveToLocation(myKing, 96, 48, 50)
     })
 }
@@ -2819,6 +2956,7 @@ if (controller.B.isPressed()) {
 if (controller.A.isPressed()) {
     debugMode = true
 }
+playMusic("zelba intro")
 scene.setBackgroundColor(6)
 spriteutils.setConsoleOverlay(false)
 createDatabase()
@@ -3068,31 +3206,29 @@ game.onUpdateInterval(3000, function () {
         if (currentLevel == 10) {
             myGurg.setPosition(myGurg.x + randint(-15, 15), myGurg.y + randint(-15, 15))
         }
-    }
-})
-game.onUpdateInterval(3000, function () {
-    if (currentLevel == 15) {
-        if (!(gammonPlaced) && !(gannonIncapacitated)) {
-            sprites.setDataNumber(myGammon, "isShooting", 0)
-            gammonPosition = randint(0, 100)
-            if (gammonPosition % 3 == 1) {
-                story.startCutscene(function () {
-                    story.spriteMoveToLocation(myGammon, 32, 48, 50)
-                    gammonPlaced = true
-                    sprites.setDataNumber(myGammon, "isShooting", 1)
-                })
-            } else if (gammonPosition % 3 == 2) {
-                story.startCutscene(function () {
-                    story.spriteMoveToLocation(myGammon, 80, 48, 50)
-                    gammonPlaced = true
-                    sprites.setDataNumber(myGammon, "isShooting", 1)
-                })
-            } else {
-                story.startCutscene(function () {
-                    story.spriteMoveToLocation(myGammon, 128, 48, 50)
-                    gammonPlaced = true
-                    sprites.setDataNumber(myGammon, "isShooting", 1)
-                })
+        if (currentLevel == 15) {
+            if (!(gammonPlaced) && !(gannonIncapacitated)) {
+                sprites.setDataNumber(myGammon, "isShooting", 0)
+                gammonPosition = randint(0, 100)
+                if (gammonPosition % 3 == 1) {
+                    story.startCutscene(function () {
+                        story.spriteMoveToLocation(myGammon, 32, 48, 50)
+                        gammonPlaced = true
+                        sprites.setDataNumber(myGammon, "isShooting", 1)
+                    })
+                } else if (gammonPosition % 3 == 2) {
+                    story.startCutscene(function () {
+                        story.spriteMoveToLocation(myGammon, 80, 48, 50)
+                        gammonPlaced = true
+                        sprites.setDataNumber(myGammon, "isShooting", 1)
+                    })
+                } else {
+                    story.startCutscene(function () {
+                        story.spriteMoveToLocation(myGammon, 128, 48, 50)
+                        gammonPlaced = true
+                        sprites.setDataNumber(myGammon, "isShooting", 1)
+                    })
+                }
             }
         }
     }
