@@ -2280,8 +2280,15 @@ function showCredits () {
     tiles.destroySpritesOfKind(SpriteKind.Player)
     tiles.destroySpritesOfKind(SpriteKind.King)
     tiles.destroySpritesOfKind(SpriteKind.Special)
-    scene.setBackgroundImage(assets.image`sprCredits`)
+    tiles.destroySpritesOfKind(SpriteKind.OrbsScreen)
+    myLife.destroy()
+    myArrows.destroy()
+    scene.setBackgroundImage(assets.image`stage`)
     tiles.loadMap(tiles.createMap(tilemap`tBlankMap`))
+    textSprite = textsprite.create("By drtongue96")
+    textSprite.setPosition(80, 50)
+    textSprite = textsprite.create("Music by Ashley")
+    textSprite.setPosition(82, 74)
     pause(3000)
     game.reset()
 }
@@ -2529,7 +2536,7 @@ function createDatabase () {
     1
     ],
     [
-    1,
+    101,
     3,
     10,
     9,
@@ -2922,6 +2929,7 @@ let newOrb: Sprite = null
 let shickenDirection = 0
 let playerX = 0
 let moving = false
+let textSprite: TextSprite = null
 let tempLife = 0
 let gammonPhase = 0
 let gannonIncapacitated = false
@@ -2998,7 +3006,7 @@ let dink: Sprite = null
 let mySprite: Sprite = null
 let playerChoosing = false
 let debugMode = false
-debugMode = false
+debugMode = true
 if (controller.B.isPressed()) {
     clearSave()
 }
@@ -3141,70 +3149,72 @@ game.onUpdateInterval(500, function () {
             }
         }
     }
-    myLife.setIcon(img`
-        ....................
-        ....................
-        ....................
-        ....................
-        ....................
-        ......cccc.cccc.....
-        .....cc44ccc44cc....
-        ....cc4444c4444cc...
-        ....cc444444444cc...
-        ....cc444444444cc...
-        .....cc4444444cc....
-        ......cc44444cc.....
-        .......cc444cc......
-        ........cc4cc.......
-        .........ccc........
-        ..........c.........
-        ....................
-        ....................
-        ....................
-        ....................
-        `)
-    myLife.setText(" " + convertToText(playerLife))
-    if (sprites.readDataNumber(dink, "hasBow") == 1) {
-        myArrows.setIcon(assets.image`sprRArrowRight`)
-        myArrows.setText(" " + convertToText(sprites.readDataNumber(dink, "numArrows")))
-    }
-    if (currentLevel == 12) {
-        myBombs.setIcon(assets.image`sprBomb`)
-        myBombs.setText(" " + convertToText(sprites.readDataNumber(dink, "numBombs")))
-    }
-    if (sprites.readDataNumber(dink, "numOrbs") > 0) {
-        tiles.destroySpritesOfKind(SpriteKind.OrbsScreen)
-        if (sprites.readDataNumber(dink, "hasGreenOrb") == 1) {
-            newOrb = sprites.create(assets.image`sprGreenGem`, SpriteKind.OrbsScreen)
-            newOrb.setFlag(SpriteFlag.RelativeToCamera, true)
-            newOrb.top = 0
-            newOrb.left = 40
+    if (!(gameOver)) {
+        myLife.setIcon(img`
+            ....................
+            ....................
+            ....................
+            ....................
+            ....................
+            ......cccc.cccc.....
+            .....cc44ccc44cc....
+            ....cc4444c4444cc...
+            ....cc444444444cc...
+            ....cc444444444cc...
+            .....cc4444444cc....
+            ......cc44444cc.....
+            .......cc444cc......
+            ........cc4cc.......
+            .........ccc........
+            ..........c.........
+            ....................
+            ....................
+            ....................
+            ....................
+            `)
+        myLife.setText(" " + convertToText(playerLife))
+        if (sprites.readDataNumber(dink, "hasBow") == 1) {
+            myArrows.setIcon(assets.image`sprRArrowRight`)
+            myArrows.setText(" " + convertToText(sprites.readDataNumber(dink, "numArrows")))
         }
-        if (sprites.readDataNumber(dink, "hasBlueOrb") == 1) {
-            newOrb = sprites.create(assets.image`sprBlueGem`, SpriteKind.OrbsScreen)
-            newOrb.setFlag(SpriteFlag.RelativeToCamera, true)
-            newOrb.top = 0
-            newOrb.left = 53
+        if (currentLevel == 12) {
+            myBombs.setIcon(assets.image`sprBomb`)
+            myBombs.setText(" " + convertToText(sprites.readDataNumber(dink, "numBombs")))
         }
-        if (sprites.readDataNumber(dink, "hasYellowOrb") == 1) {
-            newOrb = sprites.create(assets.image`sprYellowGem`, SpriteKind.OrbsScreen)
-            newOrb.setFlag(SpriteFlag.RelativeToCamera, true)
-            newOrb.top = 0
-            newOrb.left = 66
+        if (sprites.readDataNumber(dink, "numOrbs") > 0) {
+            tiles.destroySpritesOfKind(SpriteKind.OrbsScreen)
+            if (sprites.readDataNumber(dink, "hasGreenOrb") == 1) {
+                newOrb = sprites.create(assets.image`sprGreenGem`, SpriteKind.OrbsScreen)
+                newOrb.setFlag(SpriteFlag.RelativeToCamera, true)
+                newOrb.top = 0
+                newOrb.left = 40
+            }
+            if (sprites.readDataNumber(dink, "hasBlueOrb") == 1) {
+                newOrb = sprites.create(assets.image`sprBlueGem`, SpriteKind.OrbsScreen)
+                newOrb.setFlag(SpriteFlag.RelativeToCamera, true)
+                newOrb.top = 0
+                newOrb.left = 53
+            }
+            if (sprites.readDataNumber(dink, "hasYellowOrb") == 1) {
+                newOrb = sprites.create(assets.image`sprYellowGem`, SpriteKind.OrbsScreen)
+                newOrb.setFlag(SpriteFlag.RelativeToCamera, true)
+                newOrb.top = 0
+                newOrb.left = 66
+            }
+            if (sprites.readDataNumber(dink, "hasRedOrb") == 1) {
+                newOrb = sprites.create(assets.image`sprRedGem`, SpriteKind.OrbsScreen)
+                newOrb.setFlag(SpriteFlag.RelativeToCamera, true)
+                newOrb.top = 0
+                newOrb.left = 79
+            }
         }
-        if (sprites.readDataNumber(dink, "hasRedOrb") == 1) {
-            newOrb = sprites.create(assets.image`sprRedGem`, SpriteKind.OrbsScreen)
+        tiles.destroySpritesOfKind(SpriteKind.Potion)
+        if (sprites.readDataNumber(dink, "hasPotion") == 1) {
+            newOrb = sprites.create(assets.image`sprPotion`, SpriteKind.Potion)
             newOrb.setFlag(SpriteFlag.RelativeToCamera, true)
-            newOrb.top = 0
-            newOrb.left = 79
+            newOrb.top = 96
+            newOrb.left = 10
         }
-    }
-    tiles.destroySpritesOfKind(SpriteKind.Potion)
-    if (sprites.readDataNumber(dink, "hasPotion") == 1) {
-        newOrb = sprites.create(assets.image`sprPotion`, SpriteKind.Potion)
-        newOrb.setFlag(SpriteFlag.RelativeToCamera, true)
-        newOrb.top = 96
-        newOrb.left = 10
     }
 })
 game.onUpdateInterval(100, function () {
