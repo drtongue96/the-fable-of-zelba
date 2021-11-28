@@ -59,6 +59,7 @@ function setupLevel (level: number, tileX: number, tileY: number, save: boolean)
     dink.setFlag(SpriteFlag.Invisible, false)
     scroller.scrollBackgroundWithSpeed(0, 0)
     currentLevel = level
+    music.stopAllSounds()
     music.setTempo(120)
     color.FadeToBlack.startScreenEffect(200)
     tiles.loadMap(tilemapLst[level])
@@ -1531,6 +1532,7 @@ function initializeGame () {
     bluePlaced = false
     redPlaced = false
     yellowPlaced = false
+    gameOver = false
 }
 function bossDies (monster: Sprite) {
     if (currentLevel == 10) {
@@ -2169,6 +2171,7 @@ function setTheScene (level: number, style: number) {
         }
     }
     if (level == 15) {
+        playMusic("gannon")
         tilemapLst[level] = tiles.createMap(tilemap`tmGauntlet`)
         for (let value of tiles.getTilesByType(assets.tile`tPotion`)) {
             if (sprites.readDataNumber(dink, "hasPotion") == 0) {
@@ -2710,9 +2713,9 @@ function createDatabase () {
     "\"Paco Paco\"",
     "Desert Shicken",
     "Hot Bald Head",
-    "Gauntlet",
+    "The Gauntlet",
     "\"Gammon\"",
-    "Ending Scene"
+    ""
     ]
 }
 function finalScene () {
@@ -2722,6 +2725,7 @@ function finalScene () {
         story.spriteMoveToLocation(myZelba, 32, 48, 50)
         story.spriteMoveToLocation(dink, 64, 48, 50)
         myKing = sprites.create(assets.image`sprKing`, SpriteKind.Player)
+        mySprite.setPosition(96, 140)
         characterAnimations.loopFrames(
         myKing,
         assets.animation`animKing`,
@@ -2729,6 +2733,7 @@ function finalScene () {
         characterAnimations.rule(Predicate.NotMoving)
         )
         story.spriteMoveToLocation(myKing, 96, 48, 50)
+        gameOver = true
     })
 }
 function createDropProjectile (sprVictim: Sprite, sprAttacker: Sprite, speed: number, xoffset: number, yoffset: number, myImage: Image, direction: number) {
@@ -2893,6 +2898,7 @@ let savedTilemap: tiles.WorldMap = null
 let gammonPlaced = false
 let locationLength = 0
 let locationList: number[][] = []
+let gameOver = false
 let bluePlaced = false
 let myLife: TextSprite = null
 let myBombs: TextSprite = null
@@ -2956,11 +2962,11 @@ if (controller.B.isPressed()) {
 if (controller.A.isPressed()) {
     debugMode = true
 }
-playMusic("zelba intro")
 scene.setBackgroundColor(6)
 spriteutils.setConsoleOverlay(false)
 createDatabase()
 game.setDialogCursor(assets.image`sprDink0`)
+playMusic("zelba intro")
 game.splash("The Fable of Zelba")
 startGame()
 game.onUpdate(function () {
