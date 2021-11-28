@@ -51,13 +51,32 @@ function spriteInRange (spr1: Sprite, spr2: Sprite, range: number) {
     return distanceFormula(spr1.x, spr2.x, spr1.y, spr2.y) <= range
 }
 function introScreen () {
+    playerChoosing = true
     scene.setBackgroundImage(assets.image`stage`)
     playMusic("zelba intro")
     mySprite = sprites.create(assets.image`sprDink0`, SpriteKind.Special)
+    characterAnimations.loopFrames(
+    mySprite,
+    assets.animation`animDinkIdleR`,
+    300,
+    characterAnimations.rule(Predicate.NotMoving)
+    )
     mySprite.setPosition(79, 106)
     mySprite = sprites.create(assets.image`sprZelba2`, SpriteKind.Special)
+    characterAnimations.loopFrames(
+    mySprite,
+    assets.animation`animZelbaIdle`,
+    500,
+    characterAnimations.rule(Predicate.NotMoving)
+    )
     mySprite.setPosition(96, 90)
     mySprite = sprites.create(assets.image`sprKing`, SpriteKind.Special)
+    characterAnimations.loopFrames(
+    mySprite,
+    assets.animation`animKing`,
+    500,
+    characterAnimations.rule(Predicate.NotMoving)
+    )
     mySprite.setPosition(68, 90)
     pause(10000)
 }
@@ -1214,6 +1233,9 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (playerChoosing) {
     	
     } else {
+        if (gameOver) {
+            showCredits()
+        }
         if (currentLevel == 0 || (currentLevel == 2 || currentLevel == 16)) {
             if (!(talking)) {
                 if (dink.overlapsWith(myNPC1)) {
@@ -2254,6 +2276,15 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`tLava1Ouch`, function (sprite
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tLava2Ouch`, function (sprite, location) {
     backToStart(currentLevel, sprite)
 })
+function showCredits () {
+    tiles.destroySpritesOfKind(SpriteKind.Player)
+    tiles.destroySpritesOfKind(SpriteKind.King)
+    tiles.destroySpritesOfKind(SpriteKind.Special)
+    scene.setBackgroundImage(assets.image`sprCredits`)
+    tiles.loadMap(tiles.createMap(tilemap`tBlankMap`))
+    pause(3000)
+    game.reset()
+}
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tBlueGem`, function (sprite, location) {
     if (sprites.readDataNumber(dink, "hasBlueOrb") == 1) {
         tiles.replaceAllTiles(assets.tile`tBlueGem`, assets.tile`tBlueOrbSpot`)
@@ -2732,20 +2763,21 @@ function finalScene () {
     playMusic("zelba end")
     controller.moveSprite(dink, 0, 0)
     story.startCutscene(function () {
-        effects.confetti.startScreenEffect()
-        story.spriteMoveToLocation(myZelba, 32, 48, 50)
-        story.spriteMoveToLocation(dink, 64, 48, 50)
+        effects.confetti.startScreenEffect(10000)
+        story.spriteMoveToLocation(myZelba, 40, 48, 50)
+        story.spriteMoveToLocation(dink, 80, 48, 50)
         myKing = sprites.create(assets.image`sprKing`, SpriteKind.Player)
-        mySprite.setPosition(96, 140)
+        myKing.setPosition(82, 114)
         characterAnimations.loopFrames(
         myKing,
         assets.animation`animKing`,
         500,
         characterAnimations.rule(Predicate.NotMoving)
         )
-        story.spriteMoveToLocation(myKing, 96, 48, 50)
-        gameOver = true
+        story.spriteMoveToLocation(myKing, 120, 48, 50)
     })
+    pause(10000)
+    gameOver = true
 }
 function createDropProjectile (sprVictim: Sprite, sprAttacker: Sprite, speed: number, xoffset: number, yoffset: number, myImage: Image, direction: number) {
     angleToTarget = Math.atan2(sprVictim.y - sprAttacker.y, sprVictim.x - sprAttacker.x)
@@ -2909,7 +2941,6 @@ let savedTilemap: tiles.WorldMap = null
 let gammonPlaced = false
 let locationLength = 0
 let locationList: number[][] = []
-let gameOver = false
 let bluePlaced = false
 let myLife: TextSprite = null
 let myBombs: TextSprite = null
@@ -2929,7 +2960,7 @@ let myNPC2: Sprite = null
 let myZelba: Sprite = null
 let myKing: Sprite = null
 let myNPC1: Sprite = null
-let playerChoosing = false
+let gameOver = false
 let myHeartContainer: Sprite = null
 let myOrb: Sprite = null
 let yellowPlaced = false
@@ -2965,15 +2996,20 @@ let tilemapLst: tiles.WorldMap[] = []
 let currentLevel = 0
 let dink: Sprite = null
 let mySprite: Sprite = null
+let playerChoosing = false
 let debugMode = false
-debugMode = true
+debugMode = false
 if (controller.B.isPressed()) {
     clearSave()
 }
 if (controller.A.isPressed()) {
     debugMode = true
 }
-introScreen()
+if (debugMode) {
+	
+} else {
+    introScreen()
+}
 spriteutils.setConsoleOverlay(false)
 createDatabase()
 game.splash("The Fable of Zelba")
