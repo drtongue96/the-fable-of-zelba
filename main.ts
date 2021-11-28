@@ -1775,6 +1775,11 @@ function specialTalks (sprite: Sprite) {
     } else if (sprites.readDataString(sprite, "name") == "zelba") {
         story.startCutscene(function () {
             story.printDialog("Dink! You're the last person I'd expect to save me.", 80, 40, 50, 150)
+            controller.moveSprite(dink, 0, 0)
+        })
+        timer.after(3000, function () {
+            controller.moveSprite(dink, 50, 50)
+            finalScene()
         })
     } else {
     	
@@ -2578,6 +2583,16 @@ function createDatabase () {
     "\"Gammon\"",
     "Ending Scene"
     ]
+}
+function finalScene () {
+    console.log("finalScene")
+    controller.moveSprite(dink, 0, 0)
+    story.startCutscene(function () {
+        story.spriteMoveToLocation(myZelba, 32, 48, 50)
+        story.spriteMoveToLocation(dink, 64, 48, 50)
+        myKing = sprites.create(assets.image`sprKing`, SpriteKind.Player)
+        story.spriteMoveToLocation(myKing, 96, 48, 50)
+    })
 }
 function createDropProjectile (sprVictim: Sprite, sprAttacker: Sprite, speed: number, xoffset: number, yoffset: number, myImage: Image, direction: number) {
     angleToTarget = Math.atan2(sprVictim.y - sprAttacker.y, sprVictim.x - sprAttacker.x)

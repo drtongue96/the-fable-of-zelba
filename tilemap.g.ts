@@ -444,17 +444,6 @@ namespace myTiles {
 . 2 . . . . . . 2 
 . 2 2 2 . . 2 2 2 
 `, [myTiles.transparency16,sprites.dungeon.darkGroundNorthWest0,myTiles.tile6,tiles.util.object11,myTiles.tile55,myTiles.tile65], TileScale.Sixteen);
-            case "tmFinalScene":
-            case "level24":return tiles.createTilemap(hex`0a0008000101010101010101010101010101010101010101010101010101010101010101010101010101010101010101030101010101010101010101010101010101010101010101010101010102020202010101`, img`
-. . . . . . . . . . 
-. . . . . . . . . . 
-. . . . . . . . . . 
-. . . . . . . . . . 
-. . . . . . . . . . 
-. . . . . . . . . . 
-. . . . . . . . . . 
-. . . . . . . . . . 
-`, [myTiles.transparency16,sprites.dungeon.floorDark0,sprites.dungeon.floorLight4,myTiles.tile64], TileScale.Sixteen);
             case "tmGammon0":
             case "level23":return tiles.createTilemap(hex`0a0008000102020203030202020203030303030303030303030303030303030303030303030303030303030303030303030303030303020202020202020202020202020202020202020204020202020202020202`, img`
 . . . . . . . . . . 
@@ -542,6 +531,17 @@ namespace myTiles {
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
 `, [myTiles.transparency16], TileScale.Sixteen);
+            case "tmFinalScene":
+            case "level24":return tiles.createTilemap(hex`0a00080007090a090909090a090d0401010101010101010b0c03030303030303030c0403030303030303030b0403030302030303030b0c01010101010101010c0401010101010101010b08050503030303050506`, img`
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+`, [myTiles.transparency16,sprites.dungeon.floorDark0,myTiles.tile64,sprites.dungeon.floorLight0,sprites.dungeon.purpleOuterWest1,sprites.dungeon.purpleOuterSouth1,sprites.dungeon.purpleOuterSouthWest,sprites.dungeon.purpleOuterNorthWest,sprites.dungeon.purpleOuterSouthEast,sprites.dungeon.purpleOuterNorth1,sprites.dungeon.purpleOuterNorth2,sprites.dungeon.purpleOuterEast0,sprites.dungeon.purpleOuterEast2,sprites.dungeon.purpleOuterNorthEast], TileScale.Sixteen);
         }
         return null;
     })
