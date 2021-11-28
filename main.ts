@@ -3006,7 +3006,7 @@ let dink: Sprite = null
 let mySprite: Sprite = null
 let playerChoosing = false
 let debugMode = false
-debugMode = true
+debugMode = false
 if (controller.B.isPressed()) {
     clearSave()
 }
