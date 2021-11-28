@@ -503,12 +503,7 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tSandOuch`, function (sprite, location) {
-    dink.setFlag(SpriteFlag.GhostThroughTiles, true)
-    damagePlayer(sprite, false)
-    timer.after(1000, function () {
-        dink.setFlag(SpriteFlag.GhostThroughTiles, false)
-        backToStart(currentLevel)
-    })
+    backToStart(currentLevel, mySprite)
 })
 // Initialize the player's data
 function initializePlayer () {
@@ -1084,14 +1079,19 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`tRedGem`, function (sprite, l
         }
     }
 })
-function backToStart (level: number) {
+function backToStart (level: number, spr: Sprite) {
+    dink.setFlag(SpriteFlag.GhostThroughTiles, true)
+    damagePlayer(spr, false)
     animation.runImageAnimation(
     dink,
     assets.animation`animDeath`,
     200,
     false
     )
-    tiles.placeOnTile(dink, levelStart)
+    timer.after(1000, function () {
+        spr.setFlag(SpriteFlag.GhostThroughTiles, false)
+        tiles.placeOnTile(spr, levelStart)
+    })
 }
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (playerChoosing) {
@@ -1238,6 +1238,7 @@ function startGame () {
             sprites.setDataNumber(dink, "numArrows", 30)
             sprites.setDataNumber(dink, "numOrbs", 4)
         }
+        blockSettings.clear()
         setupLevel(currentLevel, 1, 5, true)
     }
 }
@@ -1298,12 +1299,7 @@ function setEyePosition () {
     myRightEye.setPosition(myPaco.x + 6, myPaco.y + 12)
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tSpikes`, function (sprite, location) {
-    dink.setFlag(SpriteFlag.GhostThroughTiles, true)
-    damagePlayer(sprite, false)
-    timer.after(1000, function () {
-        dink.setFlag(SpriteFlag.GhostThroughTiles, false)
-        backToStart(currentLevel)
-    })
+    backToStart(currentLevel, sprite)
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     transitioning = false
@@ -2164,20 +2160,10 @@ controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
     stats.turnStats(true)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tLava1Ouch`, function (sprite, location) {
-    dink.setFlag(SpriteFlag.GhostThroughTiles, true)
-    damagePlayer(sprite, false)
-    timer.after(1000, function () {
-        dink.setFlag(SpriteFlag.GhostThroughTiles, false)
-        backToStart(currentLevel)
-    })
+    backToStart(currentLevel, sprite)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tLava2Ouch`, function (sprite, location) {
-    dink.setFlag(SpriteFlag.GhostThroughTiles, true)
-    damagePlayer(sprite, false)
-    timer.after(1000, function () {
-        dink.setFlag(SpriteFlag.GhostThroughTiles, false)
-        backToStart(currentLevel)
-    })
+    backToStart(currentLevel, sprite)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tBlueGem`, function (sprite, location) {
     if (sprites.readDataNumber(dink, "hasBlueOrb") == 1) {
@@ -2564,6 +2550,15 @@ function createDatabase () {
     4,
     7,
     1
+    ],
+    [
+    4,
+    0,
+    9,
+    1,
+    2,
+    18,
+    1
     ]
     ]
     backgrounds = [
@@ -2774,6 +2769,9 @@ function damageMonster (myMonster: Sprite, source: Sprite, kb: boolean, arrow: b
         }
     }
 }
+scene.onOverlapTile(SpriteKind.Player, grafxkid.winterGroundAlt, function (sprite, location) {
+    backToStart(currentLevel, sprite)
+})
 sprites.onOverlap(SpriteKind.Wall, SpriteKind.Player, function (sprite, otherSprite) {
     damagePlayer(sprite, true)
 })
