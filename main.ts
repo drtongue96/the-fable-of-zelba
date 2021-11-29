@@ -855,7 +855,7 @@ function spawnMonsters () {
         tiles.placeOnTile(myEnemy, value)
         sprites.setDataNumber(myEnemy, "id", monsterId)
         sprites.setDataString(myEnemy, "monster", "bat")
-        sprites.setDataString(myEnemy, "talk", "")
+        sprites.setDataString(myEnemy, "talk", "&")
         sprites.setDataNumber(myEnemy, "damage", 2)
         sprites.setDataNumber(myEnemy, "health", 2)
         sprites.setDataNumber(myEnemy, "followDistance", 64)
@@ -897,7 +897,6 @@ function spawnMonsters () {
         sprites.setDataNumber(myEnemy, "invincible", 0)
         if (platformFlag) {
             tiles.setTileAt(value, assets.tile`transparency16`)
-            myEnemy.ay = 300
         }
         characterAnimations.loopFrames(
         myEnemy,
@@ -992,7 +991,7 @@ function spawnMonsters () {
         sprites.setDataString(myPaco, "monster", "paco")
         sprites.setDataString(myPaco, "talk", "Ehhnn")
         sprites.setDataNumber(myPaco, "damage", 1)
-        sprites.setDataNumber(myPaco, "health", 2)
+        sprites.setDataNumber(myPaco, "health", 3)
         sprites.setDataNumber(myPaco, "followDistance", 0)
         sprites.setDataNumber(myPaco, "speed", 35)
         sprites.setDataNumber(myPaco, "invincible", 1)
@@ -1156,7 +1155,7 @@ function spawnMonsters () {
         sprites.setDataString(myGammon, "monster", "gammon")
         sprites.setDataString(myGammon, "talk", "oink")
         sprites.setDataNumber(myGammon, "damage", 2)
-        sprites.setDataNumber(myGammon, "health", 6)
+        sprites.setDataNumber(myGammon, "health", 20)
         sprites.setDataNumber(myGammon, "followDistance", 0)
         sprites.setDataNumber(myGammon, "speed", 40)
         sprites.setDataNumber(myGammon, "invincible", 1)
@@ -2158,6 +2157,7 @@ function setTheScene (level: number, style: number) {
         }
     }
     if (level == 11) {
+        tilemapLst[level] = tiles.createMap(tilemap`tmWaterArena`)
         bossBattle = true
         for (let value of tiles.getTilesByType(assets.tile`tArrowDrop`)) {
             if (sprites.readDataNumber(dink, "hasBow") == 1) {
@@ -2165,6 +2165,14 @@ function setTheScene (level: number, style: number) {
                 tiles.placeOnTile(myQuiver, value)
             }
             tiles.replaceAllTiles(assets.tile`tArrowDrop`, assets.tile`tLightBlue`)
+        }
+        for (let value of tiles.getTilesByType(assets.tile`tPotion`)) {
+            if (sprites.readDataNumber(dink, "hasPotion") == 0) {
+                myHeart = sprites.create(assets.image`sprPotion`, SpriteKind.Food)
+                sprites.setDataString(myHeart, "food", "potion")
+                tiles.placeOnTile(myHeart, value)
+            }
+            tiles.replaceAllTiles(assets.tile`tPotion`, assets.tile`tLightBlue0`)
         }
     }
     if (level == 12) {
@@ -2196,7 +2204,7 @@ function setTheScene (level: number, style: number) {
         }
     }
     if (level == 15) {
-        playMusic("gannon")
+        playMusic("gammon")
         tilemapLst[level] = tiles.createMap(tilemap`tmGauntlet`)
         for (let value of tiles.getTilesByType(assets.tile`tPotion`)) {
             if (sprites.readDataNumber(dink, "hasPotion") == 0) {
@@ -3125,7 +3133,6 @@ game.onUpdateInterval(900, function () {
     if (currentLevel == 6 && sprites.readDataNumber(myShicken, "isShooting") == 1 || currentLevel == 12 && sprites.readDataNumber(myShicken, "isShooting") == 1) {
         if (spriteInRange(dink, myShicken, 100)) {
             myImage = assets.image`sprEgg`
-            console.log("should be shooting an egg")
             createDropProjectile(dink, myShicken, 40, -20, 20, myImage, 0)
         }
     }
