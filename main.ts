@@ -660,7 +660,7 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tSandOuch`, function (sprite, location) {
     damagePlayer(sprite, false)
-    backToStart(currentLevel, mySprite)
+    backToStart(currentLevel, sprite)
 })
 // Initialize the player's data
 function initializePlayer () {
@@ -1404,7 +1404,6 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`tGreenGem`, function (sprite,
     }
 })
 function enemyChase (monster: Sprite) {
-    console.log("enemyChase")
     monster.follow(dink, sprites.readDataNumber(monster, "speed"))
 }
 function setEyePosition () {
