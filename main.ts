@@ -112,6 +112,7 @@ function setupLevel (level: number, tileX: number, tileY: number, save: boolean)
             saveGame()
         }
     }
+    console.log(sprites.readDataNumber(dink, "numOrbs"))
 }
 function clearSave () {
     blockSettings.clear()
@@ -162,11 +163,6 @@ function cleanUp () {
     }
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Orb, function (sprite, otherSprite) {
-    if (currentLevel != 7) {
-        console.log("overlap all orbs")
-    } else {
-    	
-    }
     if (currentLevel == 10) {
         story.startCutscene(function () {
             otherSprite.destroy(effects.rings, 1000)
@@ -182,7 +178,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Orb, function (sprite, otherSpri
             music.playMelody("C - G - C5 B C5 C5 ", 400)
             story.printDialog("You got the Forest ORB.  Take it to the Temple of Lime for an extra heart.", 80, 40, 50, 150)
         })
-        sprites.setDataNumber(dink, "numOrbs", sprites.readDataNumber(dink, "numOrbs") + 1)
+        sprites.setDataNumber(dink, "numOrbs", 1)
         sprites.setDataNumber(dink, "hasGreenOrb", 1)
     }
     if (currentLevel == 11) {
@@ -200,7 +196,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Orb, function (sprite, otherSpri
             music.playMelody("C - G - C5 B C5 C5 ", 400)
             story.printDialog("You got the WATER ORB.  Take it to the Temple of Lime for an extra heart.", 80, 40, 50, 150)
         })
-        sprites.setDataNumber(dink, "numOrbs", sprites.readDataNumber(dink, "numOrbs") + 1)
+        sprites.setDataNumber(dink, "numOrbs", 2)
         sprites.setDataNumber(dink, "hasBlueOrb", 1)
     }
     if (currentLevel == 12) {
@@ -222,7 +218,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Orb, function (sprite, otherSpri
             music.playMelody("C - G - C5 B C5 C5 ", 400)
             story.printDialog("You got the DESERT ORB.  Take it to the Temple of Lime for an extra heart.", 80, 40, 50, 150)
         })
-        sprites.setDataNumber(dink, "numOrbs", sprites.readDataNumber(dink, "numOrbs") + 1)
+        sprites.setDataNumber(dink, "numOrbs", 3)
         sprites.setDataNumber(dink, "hasYellowOrb", 1)
     }
     if (currentLevel == 13) {
@@ -240,7 +236,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Orb, function (sprite, otherSpri
             music.playMelody("C - G - C5 B C5 C5 ", 400)
             story.printDialog("You got the FIRE ORB.  Take it to the Temple of Lime for an extra heart.", 80, 40, 50, 150)
         })
-        sprites.setDataNumber(dink, "numOrbs", sprites.readDataNumber(dink, "numOrbs") + 1)
+        sprites.setDataNumber(dink, "numOrbs", 4)
         sprites.setDataNumber(dink, "hasRedOrb", 1)
     }
 })
@@ -669,14 +665,14 @@ function initializePlayer () {
     playerLife = 6
     dink.setFlag(SpriteFlag.Invisible, true)
     sprites.setDataNumber(dink, "swordDamage", 1)
-    sprites.setDataNumber(dink, "hasBow", 0)
-    sprites.setDataNumber(dink, "hasGreenOrb", 0)
-    sprites.setDataNumber(dink, "hasBlueOrb", 0)
+    sprites.setDataNumber(dink, "hasBow", 1)
+    sprites.setDataNumber(dink, "hasGreenOrb", 1)
+    sprites.setDataNumber(dink, "hasBlueOrb", 1)
     sprites.setDataNumber(dink, "hasYellowOrb", 0)
     sprites.setDataNumber(dink, "hasRedOrb", 0)
-    sprites.setDataNumber(dink, "numArrows", 0)
+    sprites.setDataNumber(dink, "numArrows", 20)
     sprites.setDataNumber(dink, "maxArrows", 30)
-    sprites.setDataNumber(dink, "numOrbs", 0)
+    sprites.setDataNumber(dink, "numOrbs", 2)
     sprites.setDataNumber(dink, "gravity", 400)
     sprites.setDataNumber(dink, "invincibilityPeriod", 2000)
     sprites.setDataNumber(dink, "numBombs", 0)
@@ -1509,7 +1505,6 @@ function makeBlinkingAnimation (spr: Sprite) {
     picture.replace(3, 5)
     return animationArray
 }
-// Initialize game wide variables/settings and initialize certain sprites so they don't cause errors
 function initializeGame () {
     music.stopAllSounds()
     music.setVolume(100)
@@ -2181,7 +2176,23 @@ function setTheScene (level: number, style: number) {
         tiles.placeOnTile(myCannon, tiles.getTileLocation(8, 14))
     }
     if (level == 13) {
+        tilemapLst[level] = tiles.createMap(tilemap`tmFireArena`)
         bossBattle = true
+        for (let value of tiles.getTilesByType(assets.tile`tArrowDrop`)) {
+            if (sprites.readDataNumber(dink, "hasBow") == 1) {
+                myQuiver = sprites.create(assets.image`sprRArrowRight`, SpriteKind.Ammo)
+                tiles.placeOnTile(myQuiver, value)
+            }
+            tiles.replaceAllTiles(assets.tile`tArrowDrop`, assets.tile`tLightBlue`)
+        }
+        for (let value of tiles.getTilesByType(assets.tile`tPotion`)) {
+            if (sprites.readDataNumber(dink, "hasPotion") == 0) {
+                myHeart = sprites.create(assets.image`sprPotion`, SpriteKind.Food)
+                sprites.setDataString(myHeart, "food", "potion")
+                tiles.placeOnTile(myHeart, value)
+            }
+            tiles.replaceAllTiles(assets.tile`tPotion`, assets.tile`tLightBlue`)
+        }
     }
     if (level == 14) {
         tilemapLst[level] = tiles.createMap(tilemap`tmGauntlet`)
@@ -2746,18 +2757,18 @@ function createDatabase () {
     "",
     "",
     "Cacareek Village",
-    "Forest Dungeon",
-    "Water Dungeon",
-    "Fire Dungeon",
-    "Desert Dungeon",
+    "Forest Area",
+    "Water Area",
+    "Fire Mountain",
+    "The Desert",
     "Temple of Lime",
     "The Store",
     "Gammon's Castle",
     "\"The Gurg\"",
     "\"Paco Paco\"",
-    "Desert Shicken",
-    "Hot Bald Head",
-    "The Gauntlet",
+    "\"Desert Shicken\"",
+    "\"Hot Bald Head\"",
+    "\"The Gauntlet\"",
     "\"Gammon\"",
     ""
     ]
@@ -3005,16 +3016,8 @@ let dink: Sprite = null
 let mySprite: Sprite = null
 let playerChoosing = false
 let debugMode = false
-debugMode = true
-if (controller.B.isPressed()) {
-    clearSave()
-}
-if (controller.A.isPressed()) {
-    debugMode = true
-}
-if (debugMode) {
-	
-} else {
+debugMode = false
+if (!(debugMode)) {
     introScreen()
 }
 spriteutils.setConsoleOverlay(false)
@@ -3174,8 +3177,11 @@ game.onUpdateInterval(500, function () {
             myArrows.setText(" " + convertToText(sprites.readDataNumber(dink, "numArrows")))
         }
         if (currentLevel == 12) {
+            myBombs.setFlag(SpriteFlag.Invisible, false)
             myBombs.setIcon(assets.image`sprBomb`)
             myBombs.setText(" " + convertToText(sprites.readDataNumber(dink, "numBombs")))
+        } else {
+            myBombs.setFlag(SpriteFlag.Invisible, true)
         }
         if (sprites.readDataNumber(dink, "numOrbs") > 0) {
             tiles.destroySpritesOfKind(SpriteKind.OrbsScreen)

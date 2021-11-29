@@ -564,18 +564,6 @@
         ],
         "displayName": "tmCutScene0"
     },
-    "tmFireArena1": {
-        "id": "tmFireArena1",
-        "mimeType": "application/mkcd-tilemap",
-        "data": "MTAwYTAwMDgwMDAxMDMwMzAzMDMwMzAzMDMwMzAyMDMwMzAzMDMwMzAzMDMwMzAzMDIwMzAzMDMwMzAzMDMwMzAzMDMwMjAzMDMwMzAzMDMwMzAzMDMwMzAyMDMwMzAzMDMwMzAzMDMwMzAzMDIwMzAzMDMwMzAzMDMwMzAzMDMwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDIwMDAwMDAwMDIwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMA==",
-        "tileset": [
-            "myTiles.transparency16",
-            "myTiles.tile52",
-            "myTiles.tile29",
-            "sprites.dungeon.floorLight0"
-        ],
-        "displayName": "tmFireArena"
-    },
     "tmDesertArena2": {
         "id": "tmDesertArena2",
         "mimeType": "application/mkcd-tilemap",
@@ -880,6 +868,29 @@
             "myTiles.tile45"
         ],
         "displayName": "tDesert"
+    },
+    "level15": {
+        "id": "level15",
+        "mimeType": "application/mkcd-tilemap",
+        "data": "MTAxMDAwMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMA==",
+        "tileset": [
+            "myTiles.transparency16"
+        ],
+        "displayName": "level15"
+    },
+    "tmFireArena1": {
+        "id": "tmFireArena1",
+        "mimeType": "application/mkcd-tilemap",
+        "data": "MTAwYTAwMDgwMDAxMDMwMzAzMDMwMzAzMDMwMzAyMDMwMzAzMDMwMzAzMDMwMzAzMDIwMzAzMDMwMzAzMDMwMzAzMDMwMjAzMDMwMzAzMDMwMzAzMDMwMzAyMDMwMzAzMDMwMzAzMDMwMzAzMDQwMzAzMDMwMzAzMDMwMzAzMDMwMjAyMDIwMjAyMDIwMjAyMDIwMjAyMDUwMjAyMDIwMjAyMDIwMjAyMDIwMDAwMDAwMDIwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMA==",
+        "tileset": [
+            "myTiles.transparency16",
+            "myTiles.tile52",
+            "myTiles.tile29",
+            "sprites.dungeon.floorLight0",
+            "myTiles.tile3",
+            "myTiles.tile67"
+        ],
+        "displayName": "tmFireArena"
     },
     "*": {
         "mimeType": "image/x-mkcd-f4",
