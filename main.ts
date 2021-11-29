@@ -1505,6 +1505,7 @@ function initializeGame () {
     redPlaced = false
     yellowPlaced = false
     gameOver = false
+    playGammonMusic = false
 }
 function bossDies (monster: Sprite) {
     if (currentLevel == 10) {
@@ -1652,6 +1653,7 @@ function bossDies (monster: Sprite) {
         })
     }
     if (currentLevel == 15) {
+        playGammonMusic = false
         monster.setVelocity(0, 0)
         story.startCutscene(function () {
             story.spriteSayText(monster, "I don't like it.")
@@ -2985,6 +2987,7 @@ let savedTilemap: tiles.WorldMap = null
 let gammonPlaced = false
 let locationLength = 0
 let locationList: number[][] = []
+let playGammonMusic = false
 let bluePlaced = false
 let bossBattle = false
 let picture: Image = null
@@ -3117,6 +3120,11 @@ game.onUpdateInterval(1500, function () {
             sprites.setDataNumber(myGammon, "isShooting", 0)
             gammonPingPongActive = true
         }
+    }
+})
+forever(function () {
+    if (currentLevel == 15 && playGammonMusic) {
+        playMusic("gammontheme")
     }
 })
 game.onUpdateInterval(600, function () {
