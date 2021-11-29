@@ -174,7 +174,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Orb, function (sprite, otherSpri
             true
             )
             music.playMelody("C - G - C5 B C5 C5 ", 400)
-            story.printDialog("You got the Forest ORB.  Take it to the Temple of Lime for an extra heart.", 80, 40, 50, 150)
+            story.printDialog("You got the FOREST ORB.  Take it to the Temple of Lime for an extra heart.", 80, 40, 50, 150)
         })
         sprites.setDataNumber(dink, "numOrbs", 1)
         sprites.setDataNumber(dink, "hasGreenOrb", 1)
@@ -1500,10 +1500,10 @@ function initializeGame () {
     bossBattle = false
     talking = false
     shootingArrow = 0
-    greenPlaced = true
-    bluePlaced = true
-    redPlaced = true
-    yellowPlaced = true
+    greenPlaced = false
+    bluePlaced = false
+    redPlaced = false
+    yellowPlaced = false
     gameOver = false
     playGammonMusic = false
 }
