@@ -118,7 +118,6 @@ function clearSave () {
     game.reset()
 }
 function cleanUp () {
-    console.log("cleanUp")
     for (let value of sprites.allOfKind(SpriteKind.Special)) {
         value.destroy()
     }
@@ -182,9 +181,9 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Orb, function (sprite, otherSpri
             )
             music.playMelody("C - G - C5 B C5 C5 ", 400)
             story.printDialog("You got the Forest ORB.  Take it to the Temple of Lime for an extra heart.", 80, 40, 50, 150)
-            sprites.setDataNumber(dink, "numOrbs", sprites.readDataNumber(dink, "numOrbs") + 1)
-            sprites.setDataNumber(dink, "hasGreenOrb", 1)
         })
+        sprites.setDataNumber(dink, "numOrbs", sprites.readDataNumber(dink, "numOrbs") + 1)
+        sprites.setDataNumber(dink, "hasGreenOrb", 1)
     }
     if (currentLevel == 11) {
         story.startCutscene(function () {
@@ -1215,9 +1214,8 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`tRedGem`, function (sprite, l
     }
 })
 function backToStart (level: number, spr: Sprite) {
-    console.log("backToStart")
     if (dinkDead) {
-        console.log("dink dead")
+    	
     } else {
         dink.setFlag(SpriteFlag.GhostThroughTiles, true)
         timer.after(1000, function () {
@@ -1405,9 +1403,6 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`tGreenGem`, function (sprite,
         }
     }
 })
-function enemyChase (monster: Sprite) {
-    monster.follow(dink, sprites.readDataNumber(monster, "speed"))
-}
 function setEyePosition () {
     myLeftEye.setPosition(myPaco.x - 6, myPaco.y + 12)
     myRightEye.setPosition(myPaco.x + 6, myPaco.y + 12)
@@ -2301,9 +2296,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`tBlueGem`, function (sprite, 
         if (bluePlaced) {
         	
         } else {
-            console.log("before check green")
             if (greenPlaced) {
-                console.log("after check green")
                 myOrb = sprites.create(assets.image`sprBlueGem`, SpriteKind.Orb)
                 tiles.placeOnTile(myOrb, tiles.getTileLocation(5, 2))
                 bluePlaced = true
@@ -3138,9 +3131,6 @@ game.onUpdateInterval(900, function () {
             createDropProjectile(dink, myShicken, 40, -20, 20, myImage, 0)
         }
     }
-    if (bossBattle) {
-    	
-    }
 })
 game.onUpdateInterval(500, function () {
     for (let value of sprites.allOfKind(SpriteKind.Special)) {
@@ -3151,7 +3141,7 @@ game.onUpdateInterval(500, function () {
     for (let value of sprites.allOfKind(SpriteKind.Enemy)) {
         if (sprites.readDataNumber(value, "followDistance") > 0) {
             if (spriteutils.distanceBetween(value, dink) < sprites.readDataNumber(value, "followDistance")) {
-                enemyChase(value)
+                value.follow(dink, sprites.readDataNumber(value, "speed"))
             }
         }
     }
