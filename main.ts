@@ -108,7 +108,9 @@ function setupLevel (level: number, tileX: number, tileY: number, save: boolean)
     }
     setTheScene(currentLevel, styleLst[level])
     if (save) {
-        saveGame()
+        if (currentLevel != 16) {
+            saveGame()
+        }
     }
 }
 function clearSave () {
@@ -2204,7 +2206,7 @@ function setTheScene (level: number, style: number) {
     }
     if (level == 15) {
         playMusic("gammon")
-        tilemapLst[level] = tiles.createMap(tilemap`tmGauntlet`)
+        tilemapLst[level] = tiles.createMap(tilemap`tmGammon0`)
         for (let value of tiles.getTilesByType(assets.tile`tPotion`)) {
             if (sprites.readDataNumber(dink, "hasPotion") == 0) {
                 myHeart = sprites.create(assets.image`sprPotion`, SpriteKind.Food)
@@ -2221,7 +2223,6 @@ function setTheScene (level: number, style: number) {
         bossBattle = true
     }
     if (level == 16) {
-        console.log("Final Scene")
         for (let value of tiles.getTilesByType(assets.tile`tZelba`)) {
             myZelba = sprites.create(assets.image`sprZelba2`, SpriteKind.Special)
             characterAnimations.loopFrames(
