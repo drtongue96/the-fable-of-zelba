@@ -649,6 +649,14 @@ function playMusic (song: string) {
         music.playTone(831, music.beat(BeatFraction.Half))
         music.playTone(277, music.beat(BeatFraction.Half))
         music.playTone(698, music.beat(BeatFraction.Double))
+    } else if (song == "gammontheme") {
+        music.setTempo(120)
+        music.playTone(196, music.beat(BeatFraction.Triplet))
+        music.playTone(220, music.beat(BeatFraction.Triplet))
+        music.playTone(349, music.beat(BeatFraction.Triplet))
+        music.playTone(370, music.beat(BeatFraction.Triplet))
+        music.playTone(233, music.beat(BeatFraction.Triplet))
+        music.playTone(208, music.beat(BeatFraction.Triplet))
     } else {
     	
     }
