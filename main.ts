@@ -85,7 +85,6 @@ sprites.onOverlap(SpriteKind.BombBlast, SpriteKind.Enemy, function (sprite, othe
     damageMonster(otherSprite, sprite, false, false)
 })
 function setupLevel (level: number, tileX: number, tileY: number, save: boolean) {
-    console.log("setupLevel")
     dink.setFlag(SpriteFlag.Invisible, false)
     scroller.scrollBackgroundWithSpeed(0, 0)
     currentLevel = level
@@ -112,7 +111,6 @@ function setupLevel (level: number, tileX: number, tileY: number, save: boolean)
             saveGame()
         }
     }
-    console.log(sprites.readDataNumber(dink, "numOrbs"))
 }
 function clearSave () {
     blockSettings.clear()
@@ -665,14 +663,14 @@ function initializePlayer () {
     playerLife = 6
     dink.setFlag(SpriteFlag.Invisible, true)
     sprites.setDataNumber(dink, "swordDamage", 1)
-    sprites.setDataNumber(dink, "hasBow", 1)
-    sprites.setDataNumber(dink, "hasGreenOrb", 1)
-    sprites.setDataNumber(dink, "hasBlueOrb", 1)
+    sprites.setDataNumber(dink, "hasBow", 0)
+    sprites.setDataNumber(dink, "hasGreenOrb", 0)
+    sprites.setDataNumber(dink, "hasBlueOrb", 0)
     sprites.setDataNumber(dink, "hasYellowOrb", 0)
     sprites.setDataNumber(dink, "hasRedOrb", 0)
-    sprites.setDataNumber(dink, "numArrows", 20)
+    sprites.setDataNumber(dink, "numArrows", 0)
     sprites.setDataNumber(dink, "maxArrows", 30)
-    sprites.setDataNumber(dink, "numOrbs", 2)
+    sprites.setDataNumber(dink, "numOrbs", 0)
     sprites.setDataNumber(dink, "gravity", 400)
     sprites.setDataNumber(dink, "invincibilityPeriod", 2000)
     sprites.setDataNumber(dink, "numBombs", 0)
@@ -734,48 +732,6 @@ function initializePlayer () {
     300,
     characterAnimations.rule(Predicate.NotMoving, Predicate.FacingDown)
     )
-}
-function doWalk () {
-    console.log("doWalk")
-    if (lastDirection == 0) {
-        animation.runImageAnimation(
-        dink,
-        assets.animation`animDinkIdleUp`,
-        200,
-        true
-        )
-    } else if (lastDirection == 1) {
-        animation.runImageAnimation(
-        dink,
-        assets.animation`animDinkRight`,
-        200,
-        true
-        )
-    } else if (lastDirection == 2) {
-        animation.runImageAnimation(
-        dink,
-        assets.animation`animDinkDown`,
-        200,
-        true
-        )
-    } else if (lastDirection == 3) {
-        animation.runImageAnimation(
-        dink,
-        assets.animation`animDinkLeft`,
-        200,
-        true
-        )
-    } else {
-        animation.runImageAnimation(
-        dink,
-        assets.animation`animDinkIdleR`,
-        100,
-        true
-        )
-    }
-    timer.after(500, function () {
-        transitioning = false
-    })
 }
 function spawnMonsters () {
     for (let value of tiles.getTilesByType(tiles.util.object4)) {
@@ -1180,7 +1136,6 @@ function spawnMonsters () {
 }
 sprites.onOverlap(SpriteKind.Sword, SpriteKind.FireBall, function (sprite, otherSprite) {
     if (sprites.readDataNumber(otherSprite, "pingpong") == 1) {
-        console.log("sword hit fireball")
         otherSprite.destroy()
         myImage = assets.image`sprFireBallGammon`
         createFollowingProjectile(myGammon, sword, 60, 0, 0, myImage, 1)
@@ -1273,7 +1228,6 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                 }
             }
         } else if (currentLevel == 12) {
-            console.log("at the cannon")
             if (sprites.readDataNumber(dink, "numBombs") > 0) {
                 sprites.setDataNumber(dink, "numBombs", sprites.readDataNumber(dink, "numBombs") - 1)
                 if (spriteutils.distanceBetween(dink, myCannon) <= 16) {
@@ -1492,7 +1446,6 @@ function damagePlayer (source: Sprite, kb: boolean) {
     }
 }
 function makeBlinkingAnimation (spr: Sprite) {
-    console.log("makeBlinkingAnimation")
     animationArray = []
     animationArray.push(spr.image)
     picture = spr.image.clone()
@@ -1614,7 +1567,6 @@ function bossDies (monster: Sprite) {
                     tiles.placeOnTile(mySprite, tiles.getTileLocation(2, 14))
                     tiles.setWallAt(tiles.getTileLocation(2, 14), true)
                 } else {
-                    console.log("already has orb")
                     mySprite = sprites.create(assets.image`sprFallBitR`, SpriteKind.NewWall)
                     tiles.placeOnTile(mySprite, tiles.getTileLocation(1, 14))
                     mySprite = sprites.create(assets.image`sprFallCornerR`, SpriteKind.NewWall)
@@ -1665,7 +1617,6 @@ function bossDies (monster: Sprite) {
         })
     }
     if (currentLevel == 15) {
-        console.log("Gammon is dead")
         monster.setVelocity(0, 0)
         story.startCutscene(function () {
             story.spriteSayText(monster, "I don't like it.")
@@ -1677,7 +1628,6 @@ function bossDies (monster: Sprite) {
             bossBattle = false
         })
     }
-    console.log(locationList.length)
     locationList.push([
     15,
     4,
@@ -1687,18 +1637,17 @@ function bossDies (monster: Sprite) {
     7,
     1
     ])
-    console.log(locationList.length)
     locationLength = locationList.length - 1
 }
 sprites.onDestroyed(SpriteKind.FireBall, function (sprite) {
-    if (sprites.readDataNumber(sprite, "pingpong") == 1) {
-        console.log("gammon missed")
-        gammonPlaced = false
-        sprites.setDataNumber(myGammon, "isShooting", 0)
+    if (currentLevel == 15) {
+        if (sprites.readDataNumber(sprite, "pingpong") == 1) {
+            gammonPlaced = false
+            sprites.setDataNumber(myGammon, "isShooting", 0)
+        }
     }
 })
 tiles.onMapLoaded(function (tilemap2) {
-    console.log("on tilemap loaded")
     if (platformFlag) {
     	
     } else {
@@ -1911,14 +1860,17 @@ function createSprites () {
     myArrows.setOutline(1, 15)
     myArrows.setPosition(126, 10)
     myArrows.setFlag(SpriteFlag.RelativeToCamera, true)
+    myArrows.z = 10
     myBombs = textsprite.create("")
     myBombs.setOutline(1, 12)
     myBombs.setPosition(127, 104)
     myBombs.setFlag(SpriteFlag.RelativeToCamera, true)
+    myBombs.z = 10
     myLife = textsprite.create("")
     myLife.setOutline(1, 12)
     myLife.setPosition(0, 0)
     myLife.setFlag(SpriteFlag.RelativeToCamera, true)
+    myLife.z = 10
     myGurg = sprites.create(assets.image`sprBlank`, SpriteKind.Enemy)
     myPaco = sprites.create(assets.image`sprBlank`, SpriteKind.Enemy)
     myLeftEye = sprites.create(assets.image`sprBlank`, SpriteKind.Enemy)
@@ -1929,7 +1881,7 @@ function createSprites () {
 }
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     if (story.isMenuOpen()) {
-        console.log("menu is open")
+    	
     } else {
         transitioning = false
         lastDirection = 2
@@ -2300,6 +2252,47 @@ function showCredits () {
     textSprite.setPosition(82, 74)
     pause(3000)
     game.reset()
+}
+function deleteMe () {
+    if (lastDirection == 0) {
+        animation.runImageAnimation(
+        dink,
+        assets.animation`animDinkIdleUp`,
+        200,
+        true
+        )
+    } else if (lastDirection == 1) {
+        animation.runImageAnimation(
+        dink,
+        assets.animation`animDinkRight`,
+        200,
+        true
+        )
+    } else if (lastDirection == 2) {
+        animation.runImageAnimation(
+        dink,
+        assets.animation`animDinkDown`,
+        200,
+        true
+        )
+    } else if (lastDirection == 3) {
+        animation.runImageAnimation(
+        dink,
+        assets.animation`animDinkLeft`,
+        200,
+        true
+        )
+    } else {
+        animation.runImageAnimation(
+        dink,
+        assets.animation`animDinkIdleR`,
+        100,
+        true
+        )
+    }
+    timer.after(500, function () {
+        transitioning = false
+    })
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tBlueGem`, function (sprite, location) {
     if (sprites.readDataNumber(dink, "hasBlueOrb") == 1) {
@@ -2828,8 +2821,6 @@ function damageGammon (myMonster: Sprite, source: Sprite, kb: boolean, arrow: bo
         gammonPlaced = true
         gannonIncapacitated = true
         if (kb) {
-            console.log("set velocity to monster")
-            console.logValue("monster is ", sprites.readDataString(myMonster, "monster"))
             spriteutils.setVelocityAtAngle(myMonster, spriteutils.angleFrom(source, myMonster), 10)
         }
         myMonster.setFlag(SpriteFlag.GhostThroughSprites, true)
@@ -2856,7 +2847,6 @@ function damageGammon (myMonster: Sprite, source: Sprite, kb: boolean, arrow: bo
     }
 }
 function damageMonster (myMonster: Sprite, source: Sprite, kb: boolean, arrow: boolean) {
-    console.log("damageMonster")
     if (sprites.readDataNumber(myMonster, "invincible") == 0) {
         if (currentLevel == 15) {
         	
@@ -2878,8 +2868,6 @@ function damageMonster (myMonster: Sprite, source: Sprite, kb: boolean, arrow: b
                 myMonster.sayText(sprites.readDataString(myMonster, "talk"), 300, false)
             }
             if (kb) {
-                console.log("set velocity to monster")
-                console.logValue("monster is ", sprites.readDataString(myMonster, "monster"))
                 if (arrow) {
                     spriteutils.setVelocityAtAngle(myMonster, spriteutils.angleFrom(source, myMonster), 40)
                 } else {
@@ -3080,22 +3068,6 @@ game.onUpdateInterval(1400, function () {
         }
     }
 })
-game.onUpdateInterval(800, function () {
-    if (bossBattle) {
-        if (currentLevel == 13 && sprites.readDataNumber(myBald, "isShooting") == 1) {
-            if (spriteInRange(dink, myBald, 100)) {
-                myImage = assets.image`sprFireBall`
-                createFollowingProjectile(dink, myBald, 40, 6, 20, myImage, 1)
-                animation.runImageAnimation(
-                myFireBall,
-                assets.animation`animBaldShot`,
-                200,
-                true
-                )
-            }
-        }
-    }
-})
 game.onUpdateInterval(1500, function () {
     if (bossBattle) {
         if (currentLevel == 15 && (sprites.readDataNumber(myGammon, "isShooting") == 1 && !(gannonIncapacitated))) {
@@ -3128,6 +3100,22 @@ game.onUpdateInterval(600, function () {
     }
 })
 game.onUpdateInterval(900, function () {
+    if (bossBattle) {
+        if (currentLevel == 13 && sprites.readDataNumber(myBald, "isShooting") == 1) {
+            if (spriteInRange(dink, myBald, 100)) {
+                myImage = assets.image`sprFireBall`
+                createFollowingProjectile(dink, myBald, 40, 6, 20, myImage, 1)
+                animation.runImageAnimation(
+                myFireBall,
+                assets.animation`animBaldShot`,
+                200,
+                true
+                )
+            }
+        }
+    }
+})
+game.onUpdateInterval(900, function () {
     if (currentLevel == 6 && sprites.readDataNumber(myShicken, "isShooting") == 1 || currentLevel == 12 && sprites.readDataNumber(myShicken, "isShooting") == 1) {
         if (spriteInRange(dink, myShicken, 100)) {
             myImage = assets.image`sprEgg`
@@ -3149,28 +3137,7 @@ game.onUpdateInterval(500, function () {
         }
     }
     if (!(gameOver)) {
-        myLife.setIcon(img`
-            ....................
-            ....................
-            ....................
-            ....................
-            ....................
-            ......cccc.cccc.....
-            .....cc44ccc44cc....
-            ....cc4444c4444cc...
-            ....cc444444444cc...
-            ....cc444444444cc...
-            .....cc4444444cc....
-            ......cc44444cc.....
-            .......cc444cc......
-            ........cc4cc.......
-            .........ccc........
-            ..........c.........
-            ....................
-            ....................
-            ....................
-            ....................
-            `)
+        myLife.setIcon(assets.image`sprHeartContainer`)
         myLife.setText(" " + convertToText(playerLife))
         if (sprites.readDataNumber(dink, "hasBow") == 1) {
             myArrows.setIcon(assets.image`sprRArrowRight`)
@@ -3214,8 +3181,8 @@ game.onUpdateInterval(500, function () {
         if (sprites.readDataNumber(dink, "hasPotion") == 1) {
             newOrb = sprites.create(assets.image`sprPotion`, SpriteKind.Potion)
             newOrb.setFlag(SpriteFlag.RelativeToCamera, true)
-            newOrb.top = 96
-            newOrb.left = 10
+            newOrb.top = 0
+            newOrb.left = 98
         }
     }
 })
