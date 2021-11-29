@@ -1500,10 +1500,10 @@ function initializeGame () {
     bossBattle = false
     talking = false
     shootingArrow = 0
-    greenPlaced = false
-    bluePlaced = false
-    redPlaced = false
-    yellowPlaced = false
+    greenPlaced = true
+    bluePlaced = true
+    redPlaced = true
+    yellowPlaced = true
     gameOver = false
     playGammonMusic = false
 }
@@ -2200,7 +2200,6 @@ function setTheScene (level: number, style: number) {
         }
     }
     if (level == 15) {
-        playMusic("gammon")
         tilemapLst[level] = tiles.createMap(tilemap`tmGammon0`)
         for (let value of tiles.getTilesByType(assets.tile`tPotion`)) {
             if (sprites.readDataNumber(dink, "hasPotion") == 0) {
@@ -2216,6 +2215,7 @@ function setTheScene (level: number, style: number) {
         gannonIncapacitated = false
         gammonPhase = 1
         bossBattle = true
+        playGammonMusic = true
     }
     if (level == 16) {
         for (let value of tiles.getTilesByType(assets.tile`tZelba`)) {
@@ -2275,6 +2275,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`tLava2Ouch`, function (sprite
     backToStart(currentLevel, sprite)
 })
 function showCredits () {
+    playMusic("intro")
     tiles.destroySpritesOfKind(SpriteKind.Player)
     tiles.destroySpritesOfKind(SpriteKind.King)
     tiles.destroySpritesOfKind(SpriteKind.Special)
@@ -2287,7 +2288,7 @@ function showCredits () {
     textSprite.setPosition(80, 50)
     textSprite = textsprite.create("Music by Ashley")
     textSprite.setPosition(82, 74)
-    pause(3000)
+    pause(5000)
     game.reset()
 }
 function deleteMe () {
@@ -3042,7 +3043,7 @@ let dink: Sprite = null
 let mySprite: Sprite = null
 let playerChoosing = false
 let debugMode = false
-debugMode = false
+debugMode = true
 if (!(debugMode)) {
     introScreen()
 }
