@@ -659,13 +659,13 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tSandOuch`, function (sprite, location) {
+    damagePlayer(sprite, false)
     backToStart(currentLevel, mySprite)
 })
 // Initialize the player's data
 function initializePlayer () {
     maxHealth = 6
     playerLife = 6
-    dink = sprites.create(assets.image`sprDink0`, SpriteKind.Player)
     dink.setFlag(SpriteFlag.Invisible, true)
     sprites.setDataNumber(dink, "swordDamage", 1)
     sprites.setDataNumber(dink, "hasBow", 0)
@@ -680,8 +680,6 @@ function initializePlayer () {
     sprites.setDataNumber(dink, "invincibilityPeriod", 2000)
     sprites.setDataNumber(dink, "numBombs", 0)
     sprites.setDataNumber(dink, "hasPotion", 0)
-    sword = sprites.create(assets.image`sprBlank`, SpriteKind.Sword)
-    arrow = sprites.create(assets.image`sprBlank`, SpriteKind.Arrow)
     dink.z = 10
     sword.z = 5
     scene.cameraFollowSprite(dink)
@@ -1216,18 +1214,16 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`tRedGem`, function (sprite, l
     }
 })
 function backToStart (level: number, spr: Sprite) {
-    dink.setFlag(SpriteFlag.GhostThroughTiles, true)
-    damagePlayer(spr, false)
-    animation.runImageAnimation(
-    dink,
-    assets.animation`animDeath`,
-    200,
-    false
-    )
-    timer.after(1000, function () {
-        spr.setFlag(SpriteFlag.GhostThroughTiles, false)
-        tiles.placeOnTile(spr, levelStart)
-    })
+    console.log("backToStart")
+    if (dinkDead) {
+        console.log("dink dead")
+    } else {
+        dink.setFlag(SpriteFlag.GhostThroughTiles, true)
+        timer.after(1000, function () {
+            spr.setFlag(SpriteFlag.GhostThroughTiles, false)
+            tiles.placeOnTile(spr, levelStart)
+        })
+    }
 }
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (playerChoosing) {
@@ -1359,6 +1355,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 function startGame () {
+    dinkDead = false
     cleanUp()
     currentLevel = 0
     initializePlayer()
@@ -1416,6 +1413,7 @@ function setEyePosition () {
     myRightEye.setPosition(myPaco.x + 6, myPaco.y + 12)
 }
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tSpikes`, function (sprite, location) {
+    damagePlayer(sprite, false)
     backToStart(currentLevel, sprite)
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -1446,54 +1444,60 @@ function checkSaveGame () {
     return false
 }
 function damagePlayer (source: Sprite, kb: boolean) {
-    playerLife += -1
-    controller.moveSprite(dink, 0, 0)
-    characterAnimations.setCharacterAnimationsEnabled(dink, false)
-    if (playerLife == 0) {
-        if (sprites.readDataNumber(dink, "hasPotion") == 1) {
-            playerLife = maxHealth
-            sprites.setDataNumber(dink, "hasPotion", 0)
-            music.magicWand.play()
+    if (dinkDead) {
+    	
+    } else {
+        playerLife += -1
+        controller.moveSprite(dink, 0, 0)
+        characterAnimations.setCharacterAnimationsEnabled(dink, false)
+        if (playerLife <= 0) {
+            if (sprites.readDataNumber(dink, "hasPotion") == 1) {
+                playerLife = maxHealth
+                sprites.setDataNumber(dink, "hasPotion", 0)
+                music.magicWand.play()
+            } else {
+                dinkDead = true
+                dink.setFlag(SpriteFlag.GhostThroughTiles, true)
+                dink.setFlag(SpriteFlag.GhostThroughSprites, true)
+                playMusic("death")
+                tiles.destroySpritesOfKind(SpriteKind.Enemy)
+                tiles.destroySpritesOfKind(SpriteKind.Projectile)
+                animation.runImageAnimation(
+                dink,
+                assets.animation`animDeath`,
+                150,
+                true
+                )
+                timer.after(2500, function () {
+                    animation.stopAnimation(animation.AnimationTypes.All, dink)
+                    startGame()
+                })
+            }
         } else {
-            dink.setFlag(SpriteFlag.Ghost, true)
-            playMusic("death")
-            tiles.destroySpritesOfKind(SpriteKind.Enemy)
-            tiles.destroySpritesOfKind(SpriteKind.Projectile)
+            music.playTone(784, music.beat(BeatFraction.Sixteenth))
+            music.playTone(880, music.beat(BeatFraction.Sixteenth))
+            if (kb) {
+                spriteutils.setVelocityAtAngle(dink, spriteutils.angleFrom(source, dink), 25)
+            }
             animation.runImageAnimation(
             dink,
-            assets.animation`animDeath`,
-            150,
+            makeBlinkingAnimation(dink),
+            100,
             true
             )
-            timer.after(2500, function () {
-                dink.destroy()
-                startGame()
+            dink.setFlag(SpriteFlag.GhostThroughSprites, true)
+            timer.after(1000, function () {
+                animation.stopAnimation(animation.AnimationTypes.All, dink)
+                dink.setVelocity(0, 0)
+                if (platformFlag) {
+                    controller.moveSprite(dink, 50, 0)
+                } else {
+                    controller.moveSprite(dink, 50, 50)
+                }
+                characterAnimations.setCharacterAnimationsEnabled(dink, true)
+                dink.setFlag(SpriteFlag.GhostThroughSprites, false)
             })
         }
-    } else {
-        music.playTone(784, music.beat(BeatFraction.Sixteenth))
-        music.playTone(880, music.beat(BeatFraction.Sixteenth))
-        if (kb) {
-            spriteutils.setVelocityAtAngle(dink, spriteutils.angleFrom(source, dink), 25)
-        }
-        animation.runImageAnimation(
-        dink,
-        makeBlinkingAnimation(dink),
-        100,
-        true
-        )
-        dink.setFlag(SpriteFlag.GhostThroughSprites, true)
-        timer.after(1000, function () {
-            animation.stopAnimation(animation.AnimationTypes.All, dink)
-            dink.setVelocity(0, 0)
-            if (platformFlag) {
-                controller.moveSprite(dink, 50, 0)
-            } else {
-                controller.moveSprite(dink, 50, 50)
-            }
-            characterAnimations.setCharacterAnimationsEnabled(dink, true)
-            dink.setFlag(SpriteFlag.GhostThroughSprites, false)
-        })
     }
 }
 function makeBlinkingAnimation (spr: Sprite) {
@@ -1515,51 +1519,9 @@ function initializeGame () {
     music.stopAllSounds()
     music.setVolume(100)
     monsterId = 1
-    boss = sprites.create(img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        `, SpriteKind.Boss)
     bossBattle = false
     talking = false
-    myNPC1 = sprites.create(assets.image`sprBlank`, SpriteKind.Player)
-    myNPC2 = sprites.create(assets.image`sprBlank`, SpriteKind.Player)
-    myNPC3 = sprites.create(assets.image`sprBlank`, SpriteKind.Player)
-    myKing = sprites.create(assets.image`sprBlank`, SpriteKind.Player)
-    myZelba = sprites.create(assets.image`sprBlank`, SpriteKind.Player)
     shootingArrow = 0
-    myArrows = textsprite.create("")
-    myArrows.setOutline(1, 15)
-    myArrows.setPosition(126, 10)
-    myArrows.setFlag(SpriteFlag.RelativeToCamera, true)
-    myBombs = textsprite.create("")
-    myBombs.setOutline(1, 12)
-    myBombs.setPosition(127, 104)
-    myBombs.setFlag(SpriteFlag.RelativeToCamera, true)
-    myLife = textsprite.create("")
-    myLife.setOutline(1, 12)
-    myLife.setPosition(0, 0)
-    myLife.setFlag(SpriteFlag.RelativeToCamera, true)
-    myGurg = sprites.create(assets.image`sprBlank`, SpriteKind.Enemy)
-    myPaco = sprites.create(assets.image`sprBlank`, SpriteKind.Enemy)
-    myLeftEye = sprites.create(assets.image`sprBlank`, SpriteKind.Enemy)
-    myRightEye = sprites.create(assets.image`sprBlank`, SpriteKind.Enemy)
-    myShicken = sprites.create(assets.image`sprBlank`, SpriteKind.Enemy)
-    myBelly = sprites.create(assets.image`sprBlank`, SpriteKind.Enemy)
-    myBald = sprites.create(assets.image`sprBlank`, SpriteKind.Enemy)
     greenPlaced = false
     bluePlaced = false
     redPlaced = false
@@ -1902,6 +1864,8 @@ function loadGame () {
         redPlaced = false
     }
     setupLevel(currentLevel, 999, 999, false)
+    characterAnimations.setCharacterAnimationsEnabled(dink, true)
+    dink.setFlag(SpriteFlag.Ghost, false)
 }
 function specialTalks (sprite: Sprite) {
     if (sprites.readDataBoolean(sprite, "talking")) {
@@ -1943,6 +1907,35 @@ function specialTalks (sprite: Sprite) {
     } else {
     	
     }
+}
+function createSprites () {
+    dink = sprites.create(assets.image`sprDink0`, SpriteKind.Player)
+    sword = sprites.create(assets.image`sprBlank`, SpriteKind.Sword)
+    arrow = sprites.create(assets.image`sprBlank`, SpriteKind.Arrow)
+    myNPC1 = sprites.create(assets.image`sprBlank`, SpriteKind.Player)
+    myNPC2 = sprites.create(assets.image`sprBlank`, SpriteKind.Player)
+    myNPC3 = sprites.create(assets.image`sprBlank`, SpriteKind.Player)
+    myKing = sprites.create(assets.image`sprBlank`, SpriteKind.Player)
+    myZelba = sprites.create(assets.image`sprBlank`, SpriteKind.Player)
+    myArrows = textsprite.create("")
+    myArrows.setOutline(1, 15)
+    myArrows.setPosition(126, 10)
+    myArrows.setFlag(SpriteFlag.RelativeToCamera, true)
+    myBombs = textsprite.create("")
+    myBombs.setOutline(1, 12)
+    myBombs.setPosition(127, 104)
+    myBombs.setFlag(SpriteFlag.RelativeToCamera, true)
+    myLife = textsprite.create("")
+    myLife.setOutline(1, 12)
+    myLife.setPosition(0, 0)
+    myLife.setFlag(SpriteFlag.RelativeToCamera, true)
+    myGurg = sprites.create(assets.image`sprBlank`, SpriteKind.Enemy)
+    myPaco = sprites.create(assets.image`sprBlank`, SpriteKind.Enemy)
+    myLeftEye = sprites.create(assets.image`sprBlank`, SpriteKind.Enemy)
+    myRightEye = sprites.create(assets.image`sprBlank`, SpriteKind.Enemy)
+    myShicken = sprites.create(assets.image`sprBlank`, SpriteKind.Enemy)
+    myBelly = sprites.create(assets.image`sprBlank`, SpriteKind.Enemy)
+    myBald = sprites.create(assets.image`sprBlank`, SpriteKind.Enemy)
 }
 controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
     if (story.isMenuOpen()) {
@@ -2271,9 +2264,11 @@ controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
     stats.turnStats(true)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tLava1Ouch`, function (sprite, location) {
+    damagePlayer(sprite, false)
     backToStart(currentLevel, sprite)
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tLava2Ouch`, function (sprite, location) {
+    damagePlayer(sprite, false)
     backToStart(currentLevel, sprite)
 })
 function showCredits () {
@@ -2900,6 +2895,7 @@ function damageMonster (myMonster: Sprite, source: Sprite, kb: boolean, arrow: b
     }
 }
 scene.onOverlapTile(SpriteKind.Player, grafxkid.winterGroundAlt, function (sprite, location) {
+    damagePlayer(sprite, false)
     backToStart(currentLevel, sprite)
 })
 sprites.onOverlap(SpriteKind.Wall, SpriteKind.Player, function (sprite, otherSprite) {
@@ -2938,6 +2934,9 @@ let gammonPosition = 0
 let myNPC4: Sprite = null
 let myChest: Sprite = null
 let myHouse: Sprite = null
+let myLife: TextSprite = null
+let myBombs: TextSprite = null
+let myArrows: TextSprite = null
 let myQuiver: Sprite = null
 let myHeart: Sprite = null
 let randomTreasure = 0
@@ -2950,11 +2949,7 @@ let gammonPlaced = false
 let locationLength = 0
 let locationList: number[][] = []
 let bluePlaced = false
-let myLife: TextSprite = null
-let myBombs: TextSprite = null
-let myArrows: TextSprite = null
 let bossBattle = false
-let boss: Sprite = null
 let picture: Image = null
 let animationArray: Image[] = []
 let greenPlaced = false
@@ -2969,6 +2964,7 @@ let myZelba: Sprite = null
 let myKing: Sprite = null
 let myNPC1: Sprite = null
 let gameOver = false
+let dinkDead = false
 let myHeartContainer: Sprite = null
 let myOrb: Sprite = null
 let yellowPlaced = false
@@ -3020,6 +3016,7 @@ if (debugMode) {
 }
 spriteutils.setConsoleOverlay(false)
 createDatabase()
+createSprites()
 game.splash("The Fable of Zelba")
 tiles.destroySpritesOfKind(SpriteKind.Special)
 startGame()
