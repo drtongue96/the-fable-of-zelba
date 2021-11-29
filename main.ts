@@ -1674,6 +1674,15 @@ function bossDies (monster: Sprite) {
     7,
     1
     ])
+    locationList.push([
+    15,
+    5,
+    0,
+    16,
+    4,
+    7,
+    1
+    ])
     locationLength = locationList.length - 1
 }
 sprites.onDestroyed(SpriteKind.FireBall, function (sprite) {
