@@ -2813,10 +2813,12 @@ function spriteInTile (sx: number, sy: number, tx: number, ty: number) {
     }
 }
 function damageGammon (myMonster: Sprite, source: Sprite, kb: boolean, arrow: boolean) {
-    console.log("damageGammon")
     if (sprites.readDataNumber(source, "pingpong") == 1) {
         sprites.setDataNumber(myMonster, "health", sprites.readDataNumber(myMonster, "health") - 1)
         statusbar.value = sprites.readDataNumber(myMonster, "health")
+        if (sprites.readDataNumber(myMonster, "health") <= 0) {
+            bossDies(myMonster)
+        }
         sprites.setDataNumber(myMonster, "invincible", 0)
         myMonster.sayText(sprites.readDataString(myMonster, "talk"), 300, false)
         gammonPlaced = true
@@ -3010,7 +3012,7 @@ let dink: Sprite = null
 let mySprite: Sprite = null
 let playerChoosing = false
 let debugMode = false
-debugMode = false
+debugMode = true
 if (controller.B.isPressed()) {
     clearSave()
 }
