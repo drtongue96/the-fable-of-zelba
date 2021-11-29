@@ -622,6 +622,33 @@ function playMusic (song: string) {
             music.rest(music.beat(BeatFraction.Double))
             music.playTone(349, music.beat(BeatFraction.Breve))
         })
+    } else if (song == "hashley") {
+        music.setTempo(156)
+        timer.background(function () {
+            music.playTone(440, music.beat(BeatFraction.Half))
+            music.playTone(330, music.beat(BeatFraction.Half))
+            music.playTone(220, music.beat(BeatFraction.Half))
+            music.playTone(330, music.beat(BeatFraction.Half))
+            music.playTone(247, music.beat(BeatFraction.Half))
+            music.playTone(415, music.beat(BeatFraction.Half))
+            music.playTone(831, music.beat(BeatFraction.Double))
+        })
+        timer.background(function () {
+            music.playTone(220, music.beat(BeatFraction.Half))
+            music.playTone(220, music.beat(BeatFraction.Half))
+            music.playTone(330, music.beat(BeatFraction.Half))
+            music.playTone(440, music.beat(BeatFraction.Half))
+            music.playTone(330, music.beat(BeatFraction.Half))
+            music.playTone(659, music.beat(BeatFraction.Half))
+            music.playTone(622, music.beat(BeatFraction.Double))
+        })
+    } else if (song == "container") {
+        music.setTempo(130)
+        music.playTone(415, music.beat(BeatFraction.Half))
+        music.playTone(622, music.beat(BeatFraction.Half))
+        music.playTone(831, music.beat(BeatFraction.Half))
+        music.playTone(277, music.beat(BeatFraction.Half))
+        music.playTone(698, music.beat(BeatFraction.Double))
     } else {
     	
     }
@@ -1209,7 +1236,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
                 if (dink.overlapsWith(myNPC2)) {
                     startTalking()
                     doConversation(myNPC2, "I am a witch.  Now you are fully healed.", "Hashley")
-                    music.playTone(466, music.beat(BeatFraction.Half))
+                    playMusic("hashley")
                     playerLife = maxHealth
                 }
                 if (dink.overlapsWith(myNPC3)) {
@@ -1372,7 +1399,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.HeartContainer, function (sprite
     maxHealth += 1
     playerLife = maxHealth
     otherSprite.destroy()
-    music.jumpDown.play()
+    playMusic("container")
 })
 function checkSaveGame () {
     if (blockSettings.exists("playerX")) {
