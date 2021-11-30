@@ -1135,6 +1135,7 @@ function spawnMonsters () {
         monsterId += 1
     }
     tiles.replaceAllTiles(assets.tile`tGunL`, assets.tile`tFloorGrey`)
+    tiles.replaceAllTiles(assets.tile`tGunR`, assets.tile`tFloorGrey`)
     for (let value of tiles.getTilesByType(assets.tile`tBoss`)) {
         myGammon = sprites.create(assets.image`sprGammon`, SpriteKind.Enemy)
         myGammon.setPosition(32, 48)
@@ -1154,6 +1155,7 @@ function spawnMonsters () {
         statusbar.max = sprites.readDataNumber(myGammon, "health")
         statusbar.setStatusBarFlag(StatusBarFlag.SmoothTransition, false)
         statusbar.setOffsetPadding(0, 3)
+        statusbar.positionDirection(CollisionDirection.Bottom)
         characterAnimations.loopFrames(
         myGammon,
         assets.animation`animGammonR`,
