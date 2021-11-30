@@ -1135,7 +1135,6 @@ function spawnMonsters () {
         monsterId += 1
     }
     tiles.replaceAllTiles(assets.tile`tGunL`, assets.tile`tFloorGrey`)
-    tiles.replaceAllTiles(assets.tile`tGunR`, assets.tile`tFloorGrey`)
     for (let value of tiles.getTilesByType(assets.tile`tBoss`)) {
         myGammon = sprites.create(assets.image`sprGammon`, SpriteKind.Enemy)
         myGammon.setPosition(32, 48)
@@ -1705,7 +1704,7 @@ tiles.onMapLoaded(function (tilemap2) {
         tiles.coverAllTiles(assets.tile`tYellowGem`, assets.tile`tYellowOrbSpot`)
         tiles.coverAllTiles(assets.tile`tRedGem`, assets.tile`tRedOrbSpot`)
         tiles.coverAllTiles(assets.tile`tBald`, sprites.dungeon.floorLight0)
-        tiles.coverAllTiles(assets.tile`tBoss`, sprites.dungeon.darkGroundNorthWest0)
+        tiles.coverAllTiles(assets.tile`tBoss`, assets.tile`tFloorGrey`)
         tiles.coverAllTiles(assets.tile`tFrog`, sprites.castle.tilePath5)
         if (currentLevel == 14) {
             tiles.coverAllTiles(tiles.util.object4, sprites.dungeon.floorLight0)
@@ -2216,7 +2215,7 @@ function setTheScene (level: number, style: number) {
                 sprites.setDataString(myHeart, "food", "potion")
                 tiles.placeOnTile(myHeart, value)
             }
-            tiles.replaceAllTiles(assets.tile`tPotion`, assets.tile`tFloorGrey`)
+            tiles.replaceAllTiles(assets.tile`tPotion`, sprites.dungeon.floorDark0)
         }
         gammonPosition = 0
         gammonPlaced = false
