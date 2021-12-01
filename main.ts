@@ -1171,10 +1171,12 @@ function spawnMonsters () {
     }
 }
 sprites.onOverlap(SpriteKind.Sword, SpriteKind.FireBall, function (sprite, otherSprite) {
-    if (sprites.readDataNumber(otherSprite, "pingpong") == 1) {
-        otherSprite.destroy()
-        myImage = assets.image`sprFireBallGammon`
-        createFollowingProjectile(myGammon, sword, 60, 0, 0, myImage, 1)
+    if (currentLevel == 15) {
+        if (sprites.readDataNumber(otherSprite, "pingpong") == 1) {
+            otherSprite.destroy()
+            myImage = assets.image`sprFireBallGammon`
+            createFollowingProjectile(myGammon, sword, 60, 0, 0, myImage, 1)
+        }
     }
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`tRedGem`, function (sprite, location) {
@@ -2292,7 +2294,7 @@ function showCredits () {
     tiles.destroySpritesOfKind(SpriteKind.OrbsScreen)
     myLife.destroy()
     myArrows.destroy()
-    scene.setBackgroundImage(assets.image`stage`)
+    scene.setBackgroundImage(assets.image`bBlack`)
     tiles.loadMap(tiles.createMap(tilemap`tBlankMap`))
     textSprite = textsprite.create("By drtongue96")
     textSprite.setPosition(80, 50)
