@@ -2292,6 +2292,7 @@ function showCredits () {
     tiles.destroySpritesOfKind(SpriteKind.King)
     tiles.destroySpritesOfKind(SpriteKind.Special)
     tiles.destroySpritesOfKind(SpriteKind.OrbsScreen)
+    tiles.destroySpritesOfKind(SpriteKind.Potion)
     myLife.destroy()
     myArrows.destroy()
     scene.setBackgroundImage(assets.image`bBlack`)
